@@ -1,205 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="hJFTxThowYnQ9dYkCo_2kVvdBly3LLKXoGfRLCc-7eE" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colour Artist Arohi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Arohi Art - Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        /* --- CSS STYLES --- */
-        :root { --primary: #ff4081; --secondary: #3f51b5; --bg: #f8f9fa; --white: #ffffff; --text: #333; }
+        :root { --primary: #ff4081; --secondary: #3f51b5; --bg: #f8f9fa; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg); padding-bottom: 80px; overflow-x: hidden; color: var(--text); }
+        body { background-color: var(--bg); padding-bottom: 70px; }
 
-        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .logo-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); padding: 5px; object-fit: cover; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3); }
-        .input-box { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; text-align: center; font-size: 1rem; }
-        .btn-main { width: 80%; padding: 12px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn-main:active { transform: scale(0.95); }
-
-        header { background: var(--white); padding: 10px 15px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .header-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); margin-right: 10px; }
-        .app-title h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.4rem; line-height: 1; }
-        .app-title p { font-size: 0.65rem; color: #777; font-weight: bold; }
-
-        .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .feed-card { background: var(--white); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; }
-        .feed-header { padding: 10px; display: flex; align-items: center; justify-content: space-between; }
-        .user-info { display: flex; align-items: center; }
-        .user-avatar { width: 35px; height: 35px; background: #eee; border-radius: 50%; margin-right: 10px; display:flex; align-items:center; justify-content:center; color:#888; }
-        .follow-btn { border: 1px solid var(--secondary); color: var(--secondary); background: white; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; }
-        .follow-btn.following { background: var(--secondary); color: white; }
-        .feed-img-container { width: 100%; height: 300px; background: #f0f0f0; position: relative; cursor: pointer; }
-        .feed-img { width: 100%; height: 100%; object-fit: cover; }
-        .multi-icon { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 5px; border-radius: 50%; font-size: 0.8rem; }
-        .feed-actions { padding: 10px; display: flex; align-items: center; }
-        .action-btn { font-size: 1.5rem; margin-right: 20px; cursor: pointer; color: #333; transition: transform 0.2s; }
-        .action-btn:active { transform: scale(1.2); }
-        .action-btn.liked { color: red; }
-        .likes-count { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; padding: 0 10px; }
-        .caption { padding: 0 10px 15px 10px; font-size: 0.9rem; color: #555; }
-
-        #view-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2500; display: none; overflow-y: auto; }
-        .modal-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 10; }
-        .big-img-container { width: 100%; height: auto; min-height: 300px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .big-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; }
-        .thumbnails { display: flex; gap: 10px; padding: 10px; overflow-x: auto; }
-        .thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
-        .thumb.active { border-color: var(--primary); }
-        .buy-btn { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; }
+        /* Login & Registration */
+        #login-page { position: fixed; inset: 0; background: var(--white); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .input-group { width: 100%; max-width: 300px; margin-bottom: 15px; position: relative; }
+        .input-box { width: 100%; padding: 12px 40px 12px 15px; border: 1px solid #ddd; border-radius: 25px; outline: none; transition: 0.3s; }
+        .input-box:focus { border-color: var(--primary); }
+        .status-icon { position: absolute; right: 15px; top: 13px; font-size: 1.2rem; display: none; }
+        .status-icon.green { color: #4caf50; display: block; }
+        .status-icon.red { color: #f44336; display: block; }
         
-        .comments-section { padding: 15px; background: #fdfdfd; border-top: 5px solid #f0f0f0; margin-bottom: 50px; }
-        .comment-list { max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
-        .comment-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        .comment-user { font-weight: bold; font-size: 0.8rem; color: var(--secondary); margin-right: 5px; }
-        .comment-date { font-size: 0.6rem; color: #aaa; float: right; }
-        .comment-input-box { display: flex; align-items: center; margin-top: 10px; border: 1px solid #ddd; border-radius: 25px; padding: 5px 10px; background: white; }
-        .comment-input-box input { flex: 1; border: none; outline: none; padding: 8px; font-size: 0.9rem; }
-        .post-btn { color: var(--primary); font-weight: bold; cursor: pointer; padding: 5px 10px; background: none; border: none; }
+        .avatar-upload { width: 80px; height: 80px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 10px; overflow: hidden; border: 2px dashed #ccc; }
+        .avatar-upload img { width: 100%; height: 100%; object-fit: cover; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: var(--white); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 2000; }
-        .nav-item { text-align: center; color: #999; font-size: 0.7rem; flex: 1; cursor: pointer; }
-        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+        /* Main UI */
+        header { background: var(--white); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .section { display: none; padding: 15px; animation: fadeIn 0.3s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Profile Style */
+        .profile-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .profile-img-large { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 10px; object-fit: cover; }
+        
+        .btn-action { width: 100%; max-width: 300px; padding: 12px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; }
+        .nav-item { color: #999; text-align: center; font-size: 0.7rem; flex: 1; cursor: pointer; }
         .nav-item.active { color: var(--primary); }
-        .nav-fab { background: var(--secondary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; position: relative; top: -15px; box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4); }
-
-        .upload-area { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 15px; background: white; margin-bottom: 20px; }
-        .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
-        .preview-img { width: 100%; height: 80px; object-fit: cover; border-radius: 5px; }
-        .menu-list { background: white; border-radius: 15px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .menu-item { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; color: #333; text-decoration: none; }
-        .profile-header { text-align: center; padding: 20px; background: white; margin-bottom: 15px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-item i { font-size: 1.2rem; display: block; }
     </style>
 </head>
 <body>
 
     <div id="login-page">
-        <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/150/ff4081/ffffff?text=Logo'" class="logo-circle">
-        <h2 style="font-family: 'Dancing Script'; margin-bottom: 5px;">Artist Miss Jyoti</h2>
-        <p style="color:#777; margin-bottom: 30px;">Online Gallery</p>
-        <input type="tel" id="phoneInput" class="input-box" placeholder="Mobile Number">
-        <button class="btn-main" onclick="window.sendOTP()" id="otpBtn">Get Code</button>
-        <div id="otp-area" style="display: none; text-align: center; width: 100%;">
-            <p id="otp-hint" style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 10px;"></p>
-            <input type="text" id="otpInput" class="input-box" placeholder="Enter Customer No.">
-            <button class="btn-main" style="background: var(--secondary);" onclick="window.verifyOTP()">Login</button>
+        <h2 style="margin-bottom: 20px; color: var(--secondary);">Create Your Account</h2>
+        
+        <label class="avatar-upload" for="reg-photo">
+            <div id="photo-placeholder"><i class="fa-solid fa-camera"></i><br><small>Photo</small></div>
+            <img id="reg-preview" src="" style="display:none;">
+        </label>
+        <input type="file" id="reg-photo" accept="image/*" style="display:none;" onchange="previewRegPhoto(this)">
+
+        <div class="input-group">
+            <input type="text" id="reg-username" class="input-box" placeholder="Choose Unique Username" oninput="checkUsername(this.value)">
+            <i id="tick-icon" class="fa-solid status-icon"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="reg-fullname" class="input-box" placeholder="Full Name">
+        </div>
+
+        <div class="input-group">
+            <input type="tel" id="reg-phone" class="input-box" placeholder="Mobile Number">
+        </div>
+
+        <button class="btn-action" onclick="sendOTP()" id="otp-send-btn">Send OTP</button>
+
+        <div id="otp-section" style="display:none; width: 100%; text-align: center; margin-top: 15px;">
+            <div class="input-group" style="margin: 0 auto 15px;">
+                <input type="text" id="login-otp" class="input-box" placeholder="Provide OTP">
+            </div>
+            <button class="btn-action" style="background: var(--secondary);" onclick="finishRegistration()">Complete Registration</button>
         </div>
     </div>
 
-    <div id="app-screen" style="display: none;">
+    <div id="main-app" style="display:none;">
         <header>
             <div style="display:flex; align-items:center;">
-                <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/50'" class="header-logo">
-                <div class="app-title"><h1>Colour Artist</h1><p>AROHI ART GALLERY      BY: JYOTI</p></div>
+                <img id="header-avatar" src="" style="width:35px; height:35px; border-radius:50%; margin-right:10px; object-fit: cover;">
+                <span id="header-name" style="font-weight:600;">User</span>
             </div>
-            <i class="fa-regular fa-bell" style="font-size: 1.2rem;"></i>
+            <i class="fa-solid fa-bell"></i>
         </header>
 
         <section id="home" class="section active">
-            <h3 style="margin-bottom:15px; color: var(--secondary);">🔥 Top List Arts</h3>
-            <div id="home-feed"><p style="text-align:center; margin-top:50px;">Loading Online Data...</p></div>
-        </section>
-
-        <section id="explore" class="section">
-            <h3 style="margin-bottom:15px; color: var(--secondary);">🌍 Explore All</h3>
-            <div id="explore-feed"><p style="text-align:center; margin-top:50px;">Loading Online Data...</p></div>
-        </section>
-
-        <section id="add" class="section">
-            <h3 style="text-align:center; margin-bottom:20px;">Upload Art</h3>
-            <div class="upload-area">
-                <i class="fa-solid fa-images" style="font-size: 2rem; color:#ccc;"></i>
-                <p>Select up to 3 Images</p>
-                <input type="file" id="fileInput" multiple accept="image/*" style="margin-top:10px;" onchange="window.handleFileSelect()">
-                <div class="preview-grid" id="previewGrid"></div>
-            </div>
-            <input type="text" id="artTitle" class="input-box" style="width:100%; text-align:left;" placeholder="Art Title">
-            <textarea id="artDesc" rows="3" placeholder="Description..." style="width:100%; border:1px solid #ddd; padding:10px; border-radius:10px; margin-bottom:10px;"></textarea>
-            <button class="btn-main" onclick="window.saveArt()" id="saveBtn">Post Art</button>
+            <h3>Feed</h3>
+            <p style="color:#888;">Posts will appear here...</p>
         </section>
 
         <section id="profile" class="section">
-            <div class="profile-header">
-                <div style="width:80px; height:80px; border-radius:50%; background:var(--secondary); color:white; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                <h2 id="profile-id">ACS-USER</h2>
-                <div style="display:flex; justify-content:center; gap:30px; margin:15px 0;">
-                    <div style="text-align:center;"><span class="stat-num" id="stat-followers">0</span><span>Followers</span></div>
-                    <div style="text-align:center;"><span class="stat-num" id="stat-following">0</span><span>Following</span></div>
-                </div>
-            </div>
-            <h3 style="margin: 0 0 10px 15px;">My Posts</h3>
-            <div id="my-posts" style="padding-bottom: 20px;"></div>
-        </section>
-
-        <section id="menu" class="section">
-            <h3 style="margin-bottom:15px;">Our Services</h3>
-            <div class="menu-list">
-                <a href="#" class="menu-item"><i class="fa-solid fa-palette"></i> Custom Painting Orders</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-image"></i> Sketch Making</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Photo Editing</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-brush"></i> Painting Tools</a>
-            </div>
-            <h3 style="margin:20px 0 15px;">Contact</h3>
-            <div class="menu-list">
-                <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-item"><i class="fa-brands fa-youtube" style="color:red;"></i> YouTube</a>
-                <a href="https://wa.me/918252900810" target="_blank" class="menu-item"><i class="fa-brands fa-whatsapp" style="color:green;"></i> WhatsApp</a>
-                <div class="menu-item" onclick="window.logout()" style="color:red; cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
+            <div class="profile-card">
+                <label for="profile-change-photo">
+                    <img id="profile-display-img" src="" class="profile-img-large" style="cursor:pointer;">
+                </label>
+                <input type="file" id="profile-change-photo" hidden onchange="updateProfilePhoto(this)">
+                
+                <h2 id="profile-display-name">Name</h2>
+                <p id="profile-display-user" style="color:var(--primary); font-weight:bold;">@username</p>
+                <br>
+                <input type="text" id="edit-name" class="input-box" placeholder="Update Name" style="margin-bottom:10px;">
+                <button class="btn-action" onclick="updateName()">Update Name</button>
+                <button onclick="logout()" style="background:none; border:none; color:red; margin-top:20px; cursor:pointer;">Logout</button>
             </div>
         </section>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="window.nav('home')"><i class="fa-solid fa-house"></i>Home</div>
-            <div class="nav-item" onclick="window.nav('explore')"><i class="fa-solid fa-compass"></i>Explore</div>
-            <div class="nav-fab" onclick="window.nav('add')"><i class="fa-solid fa-plus"></i></div>
-            <div class="nav-item" onclick="window.nav('profile')"><i class="fa-solid fa-user"></i>Profile</div>
-            <div class="nav-item" onclick="window.nav('menu')"><i class="fa-solid fa-bars"></i>Menu</div>
+            <div class="nav-item active" onclick="nav('home')"><i class="fa-solid fa-house"></i>Home</div>
+            <div class="nav-item" onclick="nav('profile')"><i class="fa-solid fa-user"></i>Profile</div>
         </nav>
-    </div>
-
-    <div id="view-modal">
-        <div class="modal-header">
-            <h3 id="view-title">Art</h3>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem; cursor:pointer;" onclick="window.closeModal()"></i>
-        </div>
-        <div class="big-img-container"><img id="main-view-img" class="big-img" src=""></div>
-        <div class="thumbnails" id="view-thumbnails"></div>
-        <div style="padding:15px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div style="display:flex; gap:20px;">
-                    <i class="fa-regular fa-heart action-btn" id="modal-like-btn"></i>
-                    <i class="fa-regular fa-share-from-square action-btn" id="modal-share-btn"></i>
-                </div>
-                <button class="buy-btn" onclick="window.buyArt()"><i class="fa-brands fa-whatsapp"></i> Buy/Order</button>
-                <i class="fa-solid fa-trash" style="color:#ddd; cursor:pointer; margin-left:10px;" onclick="window.secretDeleteCurrent()"></i>
-            </div>
-            <p id="view-likes" style="font-weight:bold; margin-bottom:5px;">0 Likes</p>
-            <p id="view-desc" style="color:#555;"></p>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                <span id="view-owner" style="font-weight:bold; font-size:0.9rem;">Artist</span>
-                <button class="follow-btn" id="modal-follow-btn">Follow</button>
-            </div>
-        </div>
-        <div class="comments-section">
-            <h4>Reviews</h4>
-            <div id="comments-list" class="comment-list"></div>
-            <div class="comment-input-box">
-                <input type="text" id="comment-input" placeholder="Write a review...">
-                <button class="post-btn" onclick="window.postComment()">POST</button>
-            </div>
-        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, arrayUnion, arrayRemove, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // YOUR CONFIG IS NOW ADDED HERE
+        // Firebase Config (Paste your own config here)
         const firebaseConfig = {
           apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
           authDomain: "anshika-art-app-c3098.firebaseapp.com",
@@ -210,335 +125,113 @@
           measurementId: "G-Q1BJT7T3ZJ"
         };
 
-        // Initialize Firebase
-        let app, db;
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            console.log("Firebase Connected");
-        } catch (e) {
-            console.error("Firebase Error", e);
-            alert("Firebase Error!");
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-        const USER_KEY = "anshika_online_session";
-        const DELETE_PASS = "24361";
-        let currentUser = JSON.parse(localStorage.getItem(USER_KEY)) || null;
-        let arts = [];
-        let currentModalArtID = null;
-        let sessionOTP = "";
+        let tempPhoto = "";
+        let generatedOTP = "";
 
-        // --- EXPOSE FUNCTIONS ---
-        window.sendOTP = sendOTP;
-        window.verifyOTP = verifyOTP;
-        window.logout = logout;
-        window.nav = nav;
-        window.handleFileSelect = handleFileSelect;
-        window.saveArt = saveArt;
-        window.closeModal = closeModal;
-        window.buyArt = buyArt;
-        window.secretDeleteCurrent = secretDeleteCurrent;
-        window.postComment = postComment;
-        window.openModal = openModal;
-        window.toggleLike = toggleLike;
-        window.toggleFollow = toggleFollow;
-        window.shareArt = shareArt;
-        window.changeMainImg = changeMainImg;
-
-        // --- INIT ---
-        if(currentUser) { 
-            showApp(); 
-        } else {
-            document.getElementById('login-page').style.display = 'flex';
-        }
-
-        // --- AUTH ---
-        function sendOTP() {
-            if(!document.getElementById('phoneInput').value) return alert("Enter Mobile");
-            const customerNo = Math.floor(Math.random() * 100) + 1;
-            sessionOTP = customerNo.toString();
-            alert("You are Customer No: " + customerNo + "\nYour OTP is: " + customerNo);
-            document.getElementById('otp-hint').innerText = "Enter OTP: " + customerNo;
-            document.getElementById('otpBtn').style.display = 'none';
-            document.getElementById('otp-area').style.display = 'block';
-        }
-
-        function verifyOTP() {
-            if(document.getElementById('otpInput').value === sessionOTP) {
-                currentUser = {
-                    id: "ACS-USER-" + Math.floor(1000 + Math.random() * 9000),
-                    phone: document.getElementById('phoneInput').value,
-                    following: [] 
-                };
-                localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-                showApp();
+        // Check Username Availability
+        window.checkUsername = async (val) => {
+            const icon = document.getElementById('tick-icon');
+            if(val.length < 3) { icon.className = "fa-solid status-icon"; return; }
+            
+            const q = query(collection(db, "users"), where("username", "==", val.toLowerCase()));
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+                icon.className = "fa-solid fa-circle-check status-icon green";
             } else {
-                alert("Wrong OTP!");
+                icon.className = "fa-solid fa-circle-xmark status-icon red";
             }
-        }
+        };
 
-        function logout() {
-            localStorage.removeItem(USER_KEY);
-            location.reload();
-        }
-
-        function showApp() {
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('app-screen').style.display = 'block';
-            updateProfileUI();
-            listenToArts();
-        }
-
-        // --- FIRESTORE LISTENER ---
-        function listenToArts() {
-            const q = query(collection(db, "arts"), orderBy("date", "desc"));
-            onSnapshot(q, (snapshot) => {
-                arts = [];
-                snapshot.docs.forEach(doc => {
-                    arts.push({ id: doc.id, ...doc.data() });
-                });
-                renderFeeds();
-            });
-        }
-
-        // --- UPLOAD ---
-        let selectedFiles = [];
-        function handleFileSelect() {
-            const input = document.getElementById('fileInput');
-            const grid = document.getElementById('previewGrid');
-            grid.innerHTML = "";
-            selectedFiles = [];
-            if(input.files.length > 3) { alert("Max 3 images!"); input.value = ""; return; }
-            Array.from(input.files).forEach(file => {
+        window.previewRegPhoto = (input) => {
+            if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    selectedFiles.push(file);
-                    grid.innerHTML += `<img src="${e.target.result}" class="preview-img">`;
+                    tempPhoto = e.target.result;
+                    document.getElementById('reg-preview').src = e.target.result;
+                    document.getElementById('reg-preview').style.display = 'block';
+                    document.getElementById('photo-placeholder').style.display = 'none';
                 };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function saveArt() {
-            if(selectedFiles.length === 0) return alert("Select image!");
-            document.getElementById('saveBtn').innerText = "Uploading...";
-            document.getElementById('saveBtn').disabled = true;
-
-            try {
-                const images = await Promise.all(selectedFiles.map(file => compressImage(file)));
-                
-                await addDoc(collection(db, "arts"), {
-                    images: images,
-                    title: document.getElementById('artTitle').value || "Untitled",
-                    desc: document.getElementById('artDesc').value,
-                    ownerID: currentUser.id,
-                    likes: [],
-                    comments: [],
-                    date: Date.now()
-                });
-
-                alert("Posted Online!");
-                document.getElementById('artTitle').value = "";
-                document.getElementById('artDesc').value = "";
-                document.getElementById('fileInput').value = "";
-                document.getElementById('previewGrid').innerHTML = "";
-                selectedFiles = [];
-                nav('home');
-
-            } catch (e) {
-                console.error(e);
-                alert("Upload Failed! Check Internet or Database Rules.");
+                reader.readAsDataURL(input.files[0]);
             }
-            document.getElementById('saveBtn').innerText = "Post Art";
-            document.getElementById('saveBtn').disabled = false;
-        }
+        };
 
-        function compressImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const maxWidth = 400; 
-                        const scale = maxWidth / img.width;
-                        canvas.width = maxWidth;
-                        canvas.height = img.height * scale;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.5));
-                    };
-                };
-            });
-        }
-
-        // --- RENDERING ---
-        function renderFeeds() {
-            const sortedByLikes = [...arts].sort((a, b) => (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0));
-            renderList('home-feed', sortedByLikes);
-            renderList('explore-feed', arts);
-            const myArts = arts.filter(a => a.ownerID === currentUser.id);
-            renderList('my-posts', myArts);
-            updateProfileUI();
-        }
-
-        function renderList(containerId, data) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            if(data.length === 0) { container.innerHTML = "<p style='text-align:center; padding:20px; color:#999;'>No arts found.</p>"; return; }
+        window.sendOTP = () => {
+            const user = document.getElementById('reg-username').value;
+            const icon = document.getElementById('tick-icon');
+            if(icon.classList.contains('red') || !user) return alert("Username unavailable or empty!");
             
-            data.forEach(art => {
-                const isLiked = art.likes && art.likes.includes(currentUser.id);
-                const likeCount = art.likes ? art.likes.length : 0;
-                const isFollowing = currentUser.following.includes(art.ownerID);
-                const multiIcon = art.images.length > 1 ? '<div class="multi-icon"><i class="fa-solid fa-layer-group"></i></div>' : '';
-                
-                const safeTitle = (art.title || "").replace(/'/g, "\\'");
-                const safeDesc = (art.desc || "").replace(/'/g, "\\'");
+            generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
+            alert("Your OTP is: " + generatedOTP); // For demo
+            document.getElementById('otp-section').style.display = 'block';
+            document.getElementById('otp-send-btn').style.display = 'none';
+        };
 
-                container.innerHTML += `
-                <div class="feed-card">
-                    <div class="feed-header">
-                        <div class="user-info">
-                            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                            <span style="font-weight:600; font-size:0.9rem;">${art.ownerID}</span>
-                        </div>
-                        <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="window.toggleFollow('${art.ownerID}')">${isFollowing ? 'Following' : 'Follow'}</button>
-                    </div>
-                    <div class="feed-img-container" onclick="window.openModal('${art.id}')">
-                        <img src="${art.images[0]}" class="feed-img">
-                        ${multiIcon}
-                    </div>
-                    <div class="feed-actions">
-                        <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike('${art.id}')"></i>
-                        <i class="fa-regular fa-share-from-square action-btn" onclick="window.shareArt('${safeTitle}', '${safeDesc}')"></i>
-                        <i class="fa-regular fa-comment action-btn" onclick="window.openModal('${art.id}')"></i>
-                    </div>
-                    <div class="likes-count">${likeCount} Likes</div>
-                    <div class="caption"><strong>${art.title}</strong></div>
-                </div>`;
-            });
-        }
+        window.finishRegistration = async () => {
+            const entered = document.getElementById('login-otp').value;
+            if(entered !== generatedOTP) return alert("Wrong OTP!");
 
-        // --- ACTIONS ---
-        async function toggleLike(id) {
-            const artRef = doc(db, "arts", id);
-            const art = arts.find(a => a.id === id);
-            const isLiked = art.likes && art.likes.includes(currentUser.id);
-            if(isLiked) { await updateDoc(artRef, { likes: arrayRemove(currentUser.id) }); } 
-            else { await updateDoc(artRef, { likes: arrayUnion(currentUser.id) }); }
-        }
+            const userData = {
+                username: document.getElementById('reg-username').value.toLowerCase(),
+                fullname: document.getElementById('reg-fullname').value,
+                phone: document.getElementById('reg-phone').value,
+                photo: tempPhoto || "https://via.placeholder.com/150"
+            };
 
-        function toggleFollow(ownerID) {
-            if(ownerID === currentUser.id) return alert("Can't follow yourself.");
-            const index = currentUser.following.indexOf(ownerID);
-            if(index === -1) currentUser.following.push(ownerID); else currentUser.following.splice(index, 1);
-            localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-            renderFeeds(); updateProfileUI();
-        }
+            await setDoc(doc(db, "users", userData.username), userData);
+            localStorage.setItem("anshika_user", JSON.stringify(userData));
+            location.reload();
+        };
 
-        function openModal(id) {
-            const art = arts.find(a => a.id === id);
-            if(!art) return;
-            currentModalArtID = id;
+        // Profile Updates
+        window.updateName = async () => {
+            const newName = document.getElementById('edit-name').value;
+            if(!newName) return;
+            let localData = JSON.parse(localStorage.getItem("anshika_user"));
+            localData.fullname = newName;
+            await setDoc(doc(db, "users", localData.username), localData);
+            localStorage.setItem("anshika_user", JSON.stringify(localData));
+            location.reload();
+        };
 
-            document.getElementById('view-modal').style.display = 'block';
-            document.getElementById('view-title').innerText = art.title;
-            document.getElementById('view-desc').innerText = art.desc;
-            document.getElementById('view-owner').innerText = art.ownerID;
-            document.getElementById('main-view-img').src = art.images[0];
-
-            const thumbs = document.getElementById('view-thumbnails');
-            thumbs.innerHTML = "";
-            art.images.forEach((src, idx) => {
-                thumbs.innerHTML += `<img src="${src}" class="thumb ${idx===0?'active':''}" onclick="window.changeMainImg('${src}', this)">`;
-            });
-
-            renderComments(art);
-            updateModalLikeUI(art);
-
-            document.getElementById('modal-like-btn').onclick = () => toggleLike(id);
-            document.getElementById('modal-share-btn').onclick = () => shareArt(art.title, art.desc);
-
-            const isFollowing = currentUser.following.includes(art.ownerID);
-            const followBtn = document.getElementById('modal-follow-btn');
-            followBtn.innerText = isFollowing ? "Following" : "Follow";
-            followBtn.onclick = () => { toggleFollow(art.ownerID); openModal(id); };
-        }
-
-        function changeMainImg(src, thumb) {
-            document.getElementById('main-view-img').src = src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-        }
-
-        function updateModalLikeUI(art) {
-            const isLiked = art.likes && art.likes.includes(currentUser.id);
-            const btn = document.getElementById('modal-like-btn');
-            btn.className = `${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}`;
-            document.getElementById('view-likes').innerText = (art.likes ? art.likes.length : 0) + " Likes";
-        }
-
-        async function postComment() {
-            const text = document.getElementById('comment-input').value;
-            if(!text) return;
-            const artRef = doc(db, "arts", currentModalArtID);
-            const newComment = { user: currentUser.id, text: text, date: new Date().toLocaleDateString() };
-            await updateDoc(artRef, { comments: arrayUnion(newComment) });
-            document.getElementById('comment-input').value = "";
-        }
-
-        function renderComments(art) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = "";
-            if(!art.comments || art.comments.length === 0) { list.innerHTML = "<p style='color:#ccc; font-size:0.8rem; text-align:center;'>No reviews yet.</p>"; return; }
-            art.comments.forEach(c => {
-                list.innerHTML += `<div class="comment-item"><span class="comment-user">${c.user}</span><span>${c.text}</span><div class="comment-date">${c.date}</div></div>`;
-            });
-        }
-
-        async function secretDeleteCurrent() {
-            const pass = prompt("Audit Password:");
-            if(pass === DELETE_PASS) {
-                if(confirm("Permanently delete for EVERYONE?")) {
-                    await deleteDoc(doc(db, "arts", currentModalArtID));
-                    closeModal();
-                    alert("Deleted from Database.");
-                }
-            } else if (pass) alert("Access Denied");
-        }
-
-        function shareArt(title, desc) {
-            if(navigator.share) {
-                navigator.share({ title: title, text: desc, url: window.location.href }).catch(console.error);
-            } else {
-                prompt("Copy link:", window.location.href);
+        window.updateProfilePhoto = (input) => {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    let localData = JSON.parse(localStorage.getItem("anshika_user"));
+                    localData.photo = e.target.result;
+                    await setDoc(doc(db, "users", localData.username), localData);
+                    localStorage.setItem("anshika_user", JSON.stringify(localData));
+                    location.reload();
+                };
+                reader.readAsDataURL(input.files[0]);
             }
-        }
+        };
 
-        function buyArt() {
-            const art = arts.find(a => a.id === currentModalArtID);
-            const phone = "918252900810"; 
-            const text = `Hi, I want to order: ${art.title}`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        function closeModal() { document.getElementById('view-modal').style.display = 'none'; currentModalArtID = null; }
-        
-        function nav(tab) {
+        // Tab Navigation
+        window.nav = (id) => {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
-            const navIndex = ['home','explore','add','profile','menu'].indexOf(tab);
-            if(navIndex !== -1 && tab !== 'add') document.querySelectorAll('.nav-item')[navIndex < 2 ? navIndex : navIndex-1].classList.add('active');
-        }
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+        };
 
-        function updateProfileUI() {
-            if(!currentUser) return;
-            document.getElementById('profile-id').innerText = currentUser.id;
-            document.getElementById('stat-following').innerText = currentUser.following.length;
+        window.logout = () => { localStorage.removeItem("anshika_user"); location.reload(); };
+
+        // Auto Login
+        const saved = localStorage.getItem("anshika_user");
+        if(saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('header-avatar').src = data.photo;
+            document.getElementById('header-name').innerText = data.fullname;
+            document.getElementById('profile-display-img').src = data.photo;
+            document.getElementById('profile-display-name').innerText = data.fullname;
+            document.getElementById('profile-display-user').innerText = "@" + data.username;
         }
     </script>
 </body>
