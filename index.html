@@ -10,7 +10,7 @@
     <style>
         :root {
             --primary-color: #ff4081;
-            --secondary-color: #3f51b5; /* Blue for Plus Button */
+            --secondary-color: #3f51b5;
             --bg-color: #fce4ec;
             --text-color: #333;
             --green-border: #00e676;
@@ -25,7 +25,7 @@
 
         body {
             background-color: #fafafa;
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 80px;
         }
 
         /* --- LOGIN PAGE --- */
@@ -59,7 +59,7 @@
             margin-bottom: 20px;
         }
 
-        input {
+        input, textarea {
             width: 100%;
             padding: 12px;
             margin: 10px 0;
@@ -78,6 +78,11 @@
             font-weight: 600;
             cursor: pointer;
             margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         /* --- MAIN APP HEADER --- */
@@ -132,7 +137,7 @@
         .section {
             display: none;
             padding: 15px;
-            animation: fadeIn 0.3s;
+            animation: fadeIn 0.5s;
         }
         
         .section.active {
@@ -140,8 +145,8 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Art Grid */
@@ -162,6 +167,7 @@
             width: 100%;
             height: 150px;
             object-fit: cover;
+            background-color: #eee;
         }
 
         .art-info {
@@ -171,30 +177,14 @@
         .art-title {
             font-size: 0.9rem;
             font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .art-desc {
             font-size: 0.7rem;
             color: #666;
-        }
-
-        /* --- SEARCH --- */
-        .search-bar {
-            width: 100%;
-            padding: 15px;
-            border-radius: 25px;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-        }
-
-        /* --- ADD ART FORM --- */
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
         }
 
         /* --- BOTTOM NAVIGATION --- */
@@ -230,7 +220,6 @@
             color: var(--primary-color);
         }
 
-        /* The Big Blue Plus Button */
         .nav-item-plus {
             position: relative;
             top: -20px;
@@ -255,11 +244,11 @@
             transform: scale(0.95) translateY(-20px);
         }
 
-        /* --- SIDE MENU (DRAWER) --- */
+        /* --- SIDE MENU --- */
         #side-menu {
             position: fixed;
             top: 0;
-            right: -100%; /* Hidden by default */
+            right: -100%;
             width: 80%;
             height: 100%;
             background: white;
@@ -310,7 +299,7 @@
             display: none;
         }
 
-        /* Customer Profile Modal */
+        /* Modal */
         #profile-modal {
             display: none;
             position: fixed;
@@ -331,7 +320,8 @@
 <body>
 
     <div id="login-page">
-        <img src="https://ibb.co/3mVC1DF1" alt="Logo" class="login-logo"> <h2 style="font-family: 'Dancing Script', cursive; margin-bottom: 20px;">Artist MS JYOTI</h2>
+        <img src="https://ibb.co/3mVC1DF1" alt="Logo" class="login-logo">
+        <h2 style="font-family: 'Dancing Script', cursive; margin-bottom: 20px;">Artist MS JYOTI</h2>
         <div class="login-box">
             <p style="margin-bottom: 10px; font-size: 0.9rem;">Create ID / Login</p>
             <input type="tel" id="phoneInput" placeholder="Enter Mobile Number (+91...)">
@@ -339,7 +329,7 @@
             
             <div id="otp-section" style="display: none;">
                 <input type="text" id="otpInput" placeholder="Enter Verification Code">
-                <button class="btn" style="background: var(--green-border);" onclick="verifyOTP()">Verify & Login</button>
+                <button class="btn" style="background: var(--green-border);" onclick="verifyOTP(24361)">Verify & Login</button>
             </div>
         </div>
     </div>
@@ -348,7 +338,7 @@
         
         <header>
             <div class="header-left">
-                <img src="https://i.ibb.co/Wvj3gq5/placeholder-logo.png" onerror="this.src='https://via.placeholder.com/50'" alt="Logo" class="main-logo">
+                <img src="https://via.placeholder.com/50/00e676/ffffff?text=Logo" alt="Logo" class="main-logo">
                 <div class="title-container">
                     <h1>Colour Artist Anshika</h1>
                     <p>ARTIST MS JYOTI</p>
@@ -361,23 +351,21 @@
 
         <section id="home-section" class="section active">
             <h3 style="margin-bottom: 15px;">Latest Arts</h3>
-            <div class="art-grid" id="home-gallery">
-                </div>
+            <div class="art-grid" id="home-gallery"></div>
         </section>
 
         <section id="search-section" class="section">
             <h3>Search Arts</h3>
             <input type="text" class="search-bar" id="searchInput" placeholder="Search by ID or Description..." onkeyup="filterArts()">
-            <div class="art-grid" id="search-results">
-                </div>
+            <div class="art-grid" id="search-results"></div>
         </section>
 
         <section id="add-section" class="section">
             <h2 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px;">Add New Art</h2>
-            <div style="background: white; padding: 20px; border-radius: 10px;">
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                 <div class="form-group">
-                    <label>Upload Image</label>
-                    <input type="file" id="artImage" accept="image/*">
+                    <label style="color: var(--secondary-color);">Upload Image</label>
+                    <input type="file" id="artImage" accept="image/*" style="border: 2px dashed var(--secondary-color); background: #e8eaf6;">
                 </div>
                 <div class="form-group">
                     <label>Description (Tags/Name)</label>
@@ -385,16 +373,15 @@
                 </div>
                 <div class="form-group">
                     <label>How to Image (Details)</label>
-                    <textarea id="artDetails" style="width:100%; padding:10px; border:1px solid #ddd;" rows="3" placeholder="Explain about the art..."></textarea>
+                    <textarea id="artDetails" rows="3" placeholder="Explain about the art..."></textarea>
                 </div>
-                <button class="btn" style="background: var(--secondary-color);" onclick="submitArt()">Submit Art</button>
+                <button class="btn" id="submitBtn" style="background: var(--secondary-color);" onclick="submitArt()">Submit Art</button>
             </div>
         </section>
 
         <section id="explore-section" class="section">
             <h3 style="margin-bottom: 15px;">Explore All Arts</h3>
-            <div class="art-grid" id="explore-gallery">
-                </div>
+            <div class="art-grid" id="explore-gallery"></div>
         </section>
 
         <nav class="bottom-nav">
@@ -423,7 +410,7 @@
         <div id="side-menu">
             <div class="menu-header">
                 <h3>Menu</h3>
-                <i class="fa-solid fa-xmark" onclick="closeMenu()" style="font-size: 1.5rem;"></i>
+                <i class="fa-solid fa-xmark" onclick="closeMenu()" style="font-size: 1.5rem; cursor:pointer;"></i>
             </div>
 
             <a href="https://youtube.com/@colourartistanshika?si=cIEpCKHISRcBGhwO" target="_blank" class="menu-link">
@@ -432,18 +419,17 @@
             <a href="#" class="menu-link">
                 <i class="fa-solid fa-images"></i> Photo Album
             </a>
-            <a href="#" onclick="alert('This website allows you to upload and view beautiful arts by MS Jyoti and others.')" class="menu-link">
+            <a href="#" onclick="alert('How to use: Login > Use the + button to add arts > View arts in Home or Explore tabs.')" class="menu-link">
                 <i class="fa-solid fa-circle-info"></i> How to use this website
             </a>
             <div style="margin-top: 20px; font-weight: bold; color: #888;">Contact</div>
             <a href="mailto:kumarijyoti24361@gmail.com" class="menu-link">
                 <i class="fa-solid fa-envelope"></i> Email: kumarijyoti...
             </a>
-            <a href="https://wa.me/918252900810" class="menu-link">
+            <a href="https://wa.me/918252900810" target="_blank" class="menu-link">
                 <i class="fa-brands fa-whatsapp" style="color: green;"></i> WhatsApp: 8252900810
             </a>
-            
-            <a href="https://wa.me/918252900810" class="menu-link" style="background: #e3f2fd; border-radius: 5px; padding: 15px; margin-top: 10px;">
+            <a href="https://wa.me/918252900810" target="_blank" class="menu-link" style="background: #e3f2fd; border-radius: 5px; padding: 15px; margin-top: 10px;">
                 <i class="fa-solid fa-comments" style="color: var(--secondary-color);"></i> 
                 <b>Chat Us</b>
             </a>
@@ -453,7 +439,7 @@
             <h3>User Profile</h3>
             <p id="user-phone-display" style="font-size: 1.2rem; color: var(--primary-color); margin: 10px 0;"></p>
             <p>ID: <span id="user-id-display"></span></p>
-            <button class="btn" onclick="document.getElementById('profile-modal').style.display='none'">Close</button>
+            <button class="btn" onclick="document.getElementById('profile-modal').style.display='none'" style="margin-top: 15px;">Close</button>
         </div>
 
     </div>
@@ -462,21 +448,19 @@
         let currentUserPhone = "";
         let currentUserId = "";
 
-        // Sample Data (Simulated Database)
+        // Sample Data
         let arts = [
-            { id: 'ART001', img: 'https://via.placeholder.com/300/ff4081/ffffff?text=Art+1', desc: 'Mandala Art Design', user: 'Admin' },
-            { id: 'ART002', img: 'https://via.placeholder.com/300/3f51b5/ffffff?text=Art+2', desc: 'Pencil Sketch Portrait', user: 'Admin' },
-            { id: 'ART003', img: 'https://via.placeholder.com/300/00e676/ffffff?text=Art+3', desc: 'Water Colour Scenery', user: 'User1' }
+            { id: 'ART001', img: 'https://via.placeholder.com/300/ff4081/ffffff?text=Sample+Art+1', desc: 'Mandala Art Design', user: 'Admin' },
+            { id: 'ART002', img: 'https://via.placeholder.com/300/3f51b5/ffffff?text=Sample+Art+2', desc: 'Pencil Sketch Portrait', user: 'Admin' }
         ];
 
-        // --- LOGIN FUNCTIONS ---
+        // --- LOGIN & SOUND ---
         function sendOTP() {
             const phone = document.getElementById('phoneInput').value;
             if (phone.length < 10) {
                 alert("Please enter a valid mobile number.");
                 return;
             }
-            // Simulate sending OTP
             alert("Verification Code sent to " + phone + "\nUse Code: 1234");
             document.getElementById('otpBtn').style.display = 'none';
             document.getElementById('otp-section').style.display = 'block';
@@ -486,14 +470,20 @@
         function verifyOTP() {
             const otp = document.getElementById('otpInput').value;
             if (otp === "1234") {
-                // Login Success
+                // HIDE LOGIN, SHOW APP
                 document.getElementById('login-page').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
-                
-                // Generate Random ID
                 currentUserId = "USER" + Math.floor(Math.random() * 10000);
                 
-                // Load Arts
+                // --- PLAY WELCOME SOUND ---
+                // This uses the device's built-in text-to-speech
+                let msg = new SpeechSynthesisUtterance();
+                msg.text = "Welcome to Colour Artist Anshika World";
+                msg.rate = 0.9; // Speed
+                msg.pitch = 1.1; // Tone
+                window.speechSynthesis.speak(msg);
+                
+                // LOAD GALLERIES
                 renderGallery('home-gallery');
                 renderGallery('explore-gallery');
             } else {
@@ -503,7 +493,6 @@
 
         // --- NAVIGATION ---
         function switchTab(tabName) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
 
@@ -535,6 +524,10 @@
         function renderGallery(containerId, data = arts) {
             const container = document.getElementById(containerId);
             container.innerHTML = "";
+            if(data.length === 0) {
+                container.innerHTML = "<p style='text-align:center; width:100%; color:#888;'>No arts found.</p>";
+                return;
+            }
             data.forEach(art => {
                 const card = `
                     <div class="art-card">
@@ -553,36 +546,45 @@
             const fileInput = document.getElementById('artImage');
             const desc = document.getElementById('artDesc').value;
             const details = document.getElementById('artDetails').value;
+            const submitBtn = document.getElementById('submitBtn');
 
-            if(fileInput.files.length === 0 || desc === "") {
-                alert("Please select an image and enter a description.");
+            if(fileInput.files.length === 0) {
+                alert("Please select an image first.");
+                return;
+            }
+            if(desc === "") {
+                alert("Please enter a description.");
                 return;
             }
 
-            // Create a fake URL for the uploaded image (Browser simulation)
-            const imgUrl = URL.createObjectURL(fileInput.files[0]);
-            
-            const newArt = {
-                id: 'ART' + Math.floor(Math.random() * 9000),
-                img: imgUrl,
-                desc: desc,
-                user: currentUserId
+            submitBtn.innerText = "Uploading...";
+            submitBtn.disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgUrl = e.target.result;
+                const newArt = {
+                    id: 'ART' + Math.floor(Math.random() * 9000),
+                    img: imgUrl,
+                    desc: desc,
+                    details: details,
+                    user: currentUserId
+                };
+                arts.unshift(newArt); 
+                
+                // Play success sound (simple beep logic or just alert)
+                alert("Art Submitted Successfully!");
+                
+                document.getElementById('artDesc').value = "";
+                document.getElementById('artDetails').value = "";
+                fileInput.value = "";
+                renderGallery('home-gallery');
+                renderGallery('explore-gallery');
+                switchTab('explore');
+                submitBtn.innerText = "Submit Art";
+                submitBtn.disabled = false;
             };
-
-            // Add to data array
-            arts.unshift(newArt); // Add to top
-
-            alert("Art Submitted Successfully! Check Explore/Home section.");
-            
-            // Clear inputs
-            document.getElementById('artDesc').value = "";
-            document.getElementById('artDetails').value = "";
-            fileInput.value = "";
-
-            // Refresh Galleries
-            renderGallery('home-gallery');
-            renderGallery('explore-gallery');
-            switchTab('explore');
+            reader.readAsDataURL(fileInput.files[0]);
         }
 
         function filterArts() {
@@ -595,13 +597,11 @@
             renderGallery('search-results', filtered);
         }
 
-        // --- PROFILE ---
         function showProfile() {
-            document.getElementById('user-phone-display').innerText = currentUserPhone;
-            document.getElementById('user-id-display').innerText = currentUserId;
+            document.getElementById('user-phone-display').innerText = currentUserPhone || "Not Logged In";
+            document.getElementById('user-id-display').innerText = currentUserId || "N/A";
             document.getElementById('profile-modal').style.display = 'block';
         }
-
     </script>
 </body>
 </html>
