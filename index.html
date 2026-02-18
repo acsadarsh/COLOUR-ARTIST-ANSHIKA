@@ -81,7 +81,7 @@
             background: var(--white); border-radius: 15px; overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.08); position: relative;
         }
-        .art-card img { width: 100%; height: 180px; object-fit: cover; }
+        .art-card img { width: 100%; height: 180px; object-fit: cover; cursor: pointer; }
         .art-info { padding: 10px; }
         .art-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
         .art-id { font-size: 0.7rem; color: #888; }
@@ -136,7 +136,8 @@
         <button class="btn-main" onclick="sendOTP()" id="otpBtn">Get Verification Code</button>
         
         <div id="otp-area" style="display: none; width: 100%; text-align: center;">
-            <input type="text" id="otpInput" class="input-box" placeholder="Enter Code: 1234">
+            <p id="otp-message" style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 10px;"></p>
+            <input type="text" id="otpInput" class="input-box" placeholder="Enter OTP Here">
             <button class="btn-main" style="background: var(--secondary);" onclick="verifyOTP()">Login & Get ID</button>
         </div>
     </div>
@@ -234,17 +235,15 @@
         // --- CONFIGURATION ---
         const DB_KEY = "anshika_gallery_db";
         const USER_KEY = "anshika_user_id_storage";
-        
+        const DELETE_PASSWORD = "24361"; // Admin Password to Delete/Audit
+
         let arts = JSON.parse(localStorage.getItem(DB_KEY)) || [];
         let currentUserID = localStorage.getItem(USER_KEY) || "";
 
-        // --- AUTO-LOGIN CHECK (यह रिफ्रेश पर लॉगआउट होने से रोकेगा) ---
+        // --- AUTO-LOGIN CHECK ---
         if (currentUserID) {
-            // अगर ID पहले से सेव है, तो Login पेज हटाओ और App दिखाओ
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('app-screen').style.display = 'block';
-            
-            // ID सेट करो
             setTimeout(() => {
                 document.getElementById('display-user-id').innerText = currentUserID;
                 document.getElementById('menu-user-id').innerText = currentUserID;
@@ -263,16 +262,29 @@
             document.getElementById('menu-user-id').innerText = currentUserID;
         }
 
-        // --- 2. LOGIN LOGIC ---
+        // --- 2. LOGIN LOGIC (DYNAMIC OTP) ---
+        let sessionOTP = "";
+
         function sendOTP() {
             if(!document.getElementById('phoneInput').value) return alert("Enter Mobile Number");
-            alert("OTP Sent: 1234");
+            
+            // Generate a random "Customer Number" between 1 and 200 (Simulation)
+            const customerNumber = Math.floor(Math.random() * 200) + 1;
+            sessionOTP = customerNumber.toString();
+            
+            // Show the Customer Number as OTP
+            const msg = "You are Customer No: " + customerNumber + "\nYour OTP is: " + customerNumber;
+            alert(msg);
+            
+            document.getElementById('otp-message').innerText = "OTP sent! (Hint: " + customerNumber + ")";
             document.getElementById('otpBtn').style.display = 'none';
             document.getElementById('otp-area').style.display = 'block';
         }
 
         function verifyOTP() {
-            if(document.getElementById('otpInput').value === "1234") {
+            const input = document.getElementById('otpInput').value;
+            // Check if entered OTP matches the Customer Number generated
+            if(input === sessionOTP) {
                 document.getElementById('login-page').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
                 generateUserID();
@@ -283,7 +295,7 @@
                     window.speechSynthesis.speak(msg);
                 }
             } else {
-                alert("Incorrect OTP");
+                alert("Incorrect OTP! Please enter your Customer Number.");
             }
         }
 
@@ -299,8 +311,8 @@
         }
 
         function logout() {
-            if(confirm("Are you sure you want to Logout?")) {
-                localStorage.removeItem(USER_KEY); // सिर्फ logout पर ही ID हटाओ
+            if(confirm("Logout?")) {
+                localStorage.removeItem(USER_KEY);
                 location.reload();
             }
         }
@@ -379,6 +391,7 @@
             });
         }
 
+        // --- 7. SECRET DELETE FUNCTION (AUDIT) ---
         function loadGallery() {
             const container = document.getElementById('gallery-container');
             container.innerHTML = "";
@@ -391,7 +404,7 @@
             arts.forEach(art => {
                 const html = `
                     <div class="art-card">
-                        <img src="${art.img}">
+                        <img src="${art.img}" onclick="secretDelete(${art.id})">
                         <div class="art-info">
                             <div class="art-title">${art.title}</div>
                             <div class="art-id" style="color: var(--secondary); font-size: 0.7rem;">Owner: ${art.userID}</div>
@@ -399,6 +412,21 @@
                     </div>`;
                 container.innerHTML += html;
             });
+        }
+
+        function secretDelete(id) {
+            // Updated Password Check: 24361
+            const password = prompt("Audit/Delete Password:");
+            if(password === DELETE_PASSWORD) { // Checks against 24361
+                if(confirm("Permanently Delete Item?")) {
+                    arts = arts.filter(a => a.id !== id);
+                    localStorage.setItem(DB_KEY, JSON.stringify(arts));
+                    loadGallery();
+                    alert("Item Deleted.");
+                }
+            } else if (password !== null) {
+                alert("Access Denied! Wrong Password.");
+            }
         }
 
         function searchArt(query) {
@@ -410,7 +438,7 @@
             filtered.forEach(art => {
                 container.innerHTML += `
                     <div class="art-card">
-                        <img src="${art.img}">
+                        <img src="${art.img}" onclick="secretDelete(${art.id})">
                         <div class="art-info"><div class="art-title">${art.title}</div></div>
                     </div>`;
             });
