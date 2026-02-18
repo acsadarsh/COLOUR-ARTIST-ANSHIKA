@@ -7,51 +7,331 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-
     <style>
-        /* CSS Wahi purana wala rahega */
-        :root { --primary-color: #ff4081; --secondary-color: #3f51b5; --bg-color: #fce4ec; --text-color: #333; --green-border: #00e676; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #fafafa; padding-bottom: 80px; }
-        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .login-box { text-align: center; width: 100%; max-width: 350px; }
-        .login-logo { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--green-border); box-shadow: 0 0 15px var(--green-border); margin-bottom: 20px; object-fit: cover; }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-        .btn { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        .btn:active { transform: scale(0.98); }
-        header { background: white; padding: 10px 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .header-left { display: flex; align-items: center; }
-        .main-logo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--green-border); box-shadow: 0 0 8px var(--green-border); margin-right: 10px; object-fit: cover; }
-        .title-container h1 { font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: var(--primary-color); line-height: 1; }
-        .title-container p { font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; color: #555; }
-        .profile-icon { font-size: 1.5rem; color: #555; cursor: pointer; }
-        .section { display: none; padding: 15px; animation: fadeIn 0.5s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-        .art-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative; }
-        .art-card img { width: 100%; height: 150px; object-fit: cover; background-color: #eee; }
-        .art-info { padding: 10px; }
-        .art-title { font-size: 0.9rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .art-desc { font-size: 0.7rem; color: #666; }
-        .delete-btn { position: absolute; top: 5px; right: 5px; background: rgba(255,0,0,0.7); color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 0.8rem; display: none; } /* Hidden by default */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; height: 60px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 500; }
-        .nav-item { text-align: center; color: #888; font-size: 0.7rem; cursor: pointer; flex: 1; }
-        .nav-item i { display: block; font-size: 1.2rem; margin-bottom: 2px; }
-        .nav-item.active { color: var(--primary-color); }
-        .nav-item-plus { position: relative; top: -20px; background: var(--secondary-color); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4); transition: transform 0.2s; }
-        .nav-item-plus i { font-size: 1.5rem; margin: 0; }
-        .nav-item-plus:active { transform: scale(0.95) translateY(-20px); }
-        #side-menu { position: fixed; top: 0; right: -100%; width: 80%; height: 100%; background: white; z-index: 2000; transition: 0.3s; box-shadow: -2px 0 10px rgba(0,0,0,0.1); padding: 20px; overflow-y: auto; }
-        #side-menu.open { right: 0; }
-        .menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .menu-link { display: flex; align-items: center; padding: 15px 0; color: #333; text-decoration: none; font-size: 1rem; border-bottom: 1px solid #f0f0f0; }
-        .menu-link i { margin-right: 15px; width: 25px; color: var(--primary-color); }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
-        #profile-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.2); z-index: 3000; text-align: center; width: 80%; }
+        :root {
+            --primary-color: #ff4081;
+            --secondary-color: #3f51b5;
+            --bg-color: #fce4ec;
+            --text-color: #333;
+            --green-border: #00e676;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            padding-bottom: 80px;
+        }
+
+        /* --- LOGIN PAGE --- */
+        #login-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--green-border);
+            box-shadow: 0 0 15px var(--green-border);
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* --- MAIN APP HEADER --- */
+        header {
+            background: white;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .main-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--green-border);
+            box-shadow: 0 0 8px var(--green-border);
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .title-container h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .title-container p {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #555;
+        }
+
+        .profile-icon {
+            font-size: 1.5rem;
+            color: #555;
+            cursor: pointer;
+        }
+
+        /* --- SECTIONS --- */
+        .section {
+            display: none;
+            padding: 15px;
+            animation: fadeIn 0.5s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Art Grid */
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .art-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        .art-info {
+            padding: 10px;
+        }
+
+        .art-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .art-desc {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        
+        /* Delete Button for Demo */
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* --- BOTTOM NAVIGATION --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            height: 60px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 500;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #888;
+            font-size: 0.7rem;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item i {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item-plus {
+            position: relative;
+            top: -20px;
+            background: var(--secondary-color);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .nav-item-plus i {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .nav-item-plus:active {
+            transform: scale(0.95) translateY(-20px);
+        }
+
+        /* --- SIDE MENU --- */
+        #side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            transition: 0.3s;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        #side-menu.open {
+            right: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            color: #333;
+            text-decoration: none;
+            font-size: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .menu-link i {
+            margin-right: 15px;
+            width: 25px;
+            color: var(--primary-color);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+        }
+
+        /* Modal */
+        #profile-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 3000;
+            text-align: center;
+            width: 80%;
+        }
+
     </style>
 </head>
 <body>
@@ -63,6 +343,7 @@
             <p style="margin-bottom: 10px; font-size: 0.9rem;">Create ID / Login</p>
             <input type="tel" id="phoneInput" placeholder="Enter Mobile Number (+91...)">
             <button class="btn" onclick="sendOTP()" id="otpBtn">Get Verification Code</button>
+            
             <div id="otp-section" style="display: none;">
                 <input type="text" id="otpInput" placeholder="Enter Verification Code">
                 <button class="btn" style="background: var(--green-border);" onclick="verifyOTP()">Verify & Login</button>
@@ -71,6 +352,7 @@
     </div>
 
     <div id="app-screen" style="display: none;">
+        
         <header>
             <div class="header-left">
                 <img src="https://via.placeholder.com/50/00e676/ffffff?text=Logo" alt="Logo" class="main-logo">
@@ -79,7 +361,9 @@
                     <p>ARTIST MS JYOTI</p>
                 </div>
             </div>
-            <div class="profile-icon" onclick="showProfile()"><i class="fa-solid fa-circle-user"></i></div>
+            <div class="profile-icon" onclick="showProfile()">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
         </header>
 
         <section id="home-section" class="section active">
@@ -89,7 +373,7 @@
 
         <section id="search-section" class="section">
             <h3>Search Arts</h3>
-            <input type="text" class="search-bar" id="searchInput" placeholder="Search..." onkeyup="filterArts()">
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search by ID or Description..." onkeyup="filterArts()">
             <div class="art-grid" id="search-results"></div>
         </section>
 
@@ -98,12 +382,19 @@
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
                 <div class="form-group">
                     <label style="color: var(--secondary-color);">Upload Image</label>
-                    <p style="font-size: 0.7rem; color: #f44336;">Warning: Use small images (ScreenShot size) for speed.</p>
+                    <p style="font-size: 0.7rem; color: #f44336; margin-bottom: 5px;">Note: Large images may fill storage. Use compressed images.</p>
                     <input type="file" id="artImage" accept="image/*" style="border: 2px dashed var(--secondary-color); background: #e8eaf6;">
                 </div>
-                <div class="form-group"><label>Description</label><input type="text" id="artDesc" placeholder="Tags/Name..."></div>
-                <div class="form-group"><label>Details</label><textarea id="artDetails" rows="3" placeholder="Explain..."></textarea></div>
+                <div class="form-group">
+                    <label>Description (Tags/Name)</label>
+                    <input type="text" id="artDesc" placeholder="e.g. Mandala art, Pencil sketch...">
+                </div>
+                <div class="form-group">
+                    <label>How to Image (Details)</label>
+                    <textarea id="artDetails" rows="3" placeholder="Explain about the art..."></textarea>
+                </div>
                 <button class="btn" id="submitBtn" style="background: var(--secondary-color);" onclick="submitArt()">Submit Art</button>
+                <button class="btn" style="background: #e91e63; margin-top: 10px;" onclick="clearAllData()">Reset All Data</button>
             </div>
         </section>
 
@@ -113,22 +404,54 @@
         </section>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
-            <div class="nav-item" onclick="switchTab('search')"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></div>
-            <div class="nav-item-plus" onclick="switchTab('add')"><i class="fa-solid fa-plus"></i></div>
-            <div class="nav-item" onclick="switchTab('explore')"><i class="fa-solid fa-compass"></i><span>Explore</span></div>
-            <div class="nav-item" onclick="openMenu()"><i class="fa-solid fa-bars"></i><span>Menu</span></div>
+            <div class="nav-item active" onclick="switchTab('home')">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('search')">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Search</span>
+            </div>
+            <div class="nav-item-plus" onclick="switchTab('add')">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <div class="nav-item" onclick="switchTab('explore')">
+                <i class="fa-solid fa-compass"></i>
+                <span>Explore</span>
+            </div>
+            <div class="nav-item" onclick="openMenu()">
+                <i class="fa-solid fa-bars"></i>
+                <span>Menu</span>
+            </div>
         </nav>
 
         <div class="overlay" id="overlay" onclick="closeMenu()"></div>
         <div id="side-menu">
-            <div class="menu-header"><h3>Menu</h3><i class="fa-solid fa-xmark" onclick="closeMenu()"></i></div>
-            <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-link"><i class="fa-brands fa-youtube" style="color: red;"></i> YouTube</a>
-            <a href="#" class="menu-link"><i class="fa-solid fa-images"></i> Photo Album</a>
-            <a href="#" class="menu-link"><i class="fa-solid fa-circle-info"></i> How to use</a>
+            <div class="menu-header">
+                <h3>Menu</h3>
+                <i class="fa-solid fa-xmark" onclick="closeMenu()" style="font-size: 1.5rem; cursor:pointer;"></i>
+            </div>
+
+            <a href="https://youtube.com/@colourartistanshika?si=cIEpCKHISRcBGhwO" target="_blank" class="menu-link">
+                <i class="fa-brands fa-youtube" style="color: red;"></i> YouTube Channel
+            </a>
+            <a href="#" class="menu-link">
+                <i class="fa-solid fa-images"></i> Photo Album
+            </a>
+            <a href="#" onclick="alert('How to use: Login > Use the + button to add arts > View arts in Home or Explore tabs.')" class="menu-link">
+                <i class="fa-solid fa-circle-info"></i> How to use this website
+            </a>
             <div style="margin-top: 20px; font-weight: bold; color: #888;">Contact</div>
-            <a href="mailto:kumarijyoti24361@gmail.com" class="menu-link"><i class="fa-solid fa-envelope"></i> Email</a>
-            <a href="https://wa.me/918252900810" target="_blank" class="menu-link"><i class="fa-brands fa-whatsapp" style="color: green;"></i> WhatsApp</a>
+            <a href="mailto:kumarijyoti24361@gmail.com" class="menu-link">
+                <i class="fa-solid fa-envelope"></i> Email: kumarijyoti...
+            </a>
+            <a href="https://wa.me/918252900810" target="_blank" class="menu-link">
+                <i class="fa-brands fa-whatsapp" style="color: green;"></i> WhatsApp: 8252900810
+            </a>
+            <a href="https://wa.me/918252900810" target="_blank" class="menu-link" style="background: #e3f2fd; border-radius: 5px; padding: 15px; margin-top: 10px;">
+                <i class="fa-solid fa-comments" style="color: var(--secondary-color);"></i> 
+                <b>Chat Us</b>
+            </a>
         </div>
         
         <div id="profile-modal">
@@ -137,101 +460,149 @@
             <p>ID: <span id="user-id-display"></span></p>
             <button class="btn" onclick="document.getElementById('profile-modal').style.display='none'" style="margin-top: 15px;">Close</button>
         </div>
+
     </div>
 
-    <script>
-        // ==========================================
-        // // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        // Note: Using URLs for HTML usage instead of 'firebase/app'
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
-  authDomain: "anshika-art-app-c3098.firebaseapp.com",
-  projectId: "anshika-art-app-c3098",
-  storageBucket: "anshika-art-app-c3098.firebasestorage.app",
-  messagingSenderId: "668172706295",
-  appId: "1:668172706295:web:3fa07ffe6134fd1d9fcef2",
-  measurementId: "G-Q1BJT7T3ZJ"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-        // ==========================================
-        
-        // Niche diye gaye code ko Firebase Console se copy karke badal dein
+        // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyD-XXXXXXXXXXXXXXXXXXXXXXXXX",
-            authDomain: "your-project.firebaseapp.com",
-            databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-            projectId: "your-project",
-            storageBucket: "your-project.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:xxxxxxxxx"
+          apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
+          authDomain: "anshika-art-app-c3098.firebaseapp.com",
+          projectId: "anshika-art-app-c3098",
+          storageBucket: "anshika-art-app-c3098.firebasestorage.app",
+          messagingSenderId: "668172706295",
+          appId: "1:668172706295:web:3fa07ffe6134fd1d9fcef2",
+          measurementId: "G-Q1BJT7T3ZJ"
         };
-        
-        // ==========================================
 
         // Initialize Firebase
-        try {
-            firebase.initializeApp(firebaseConfig);
-            console.log("Firebase Connected");
-        } catch(e) {
-            console.error("Firebase Error: Config sahi se nahi dala gaya hai.");
-        }
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
         
-        const db = firebase.database();
-        let arts = [];
+        console.log("Firebase initialized successfully!", app);
+    </script>
+    
+    <script>
         let currentUserPhone = "";
         let currentUserId = "";
 
-        // --- LOGIN ---
+        // --- STORAGE & INITIALIZATION ---
+        const STORAGE_KEY = "anshika_arts_db";
+        
+        let arts = [];
+        const storedData = localStorage.getItem(STORAGE_KEY);
+        
+        if (storedData) {
+            arts = JSON.parse(storedData);
+        } else {
+            arts = [
+                { id: 'ART001', img: 'https://via.placeholder.com/300/ff4081/ffffff?text=Welcome', desc: 'Welcome to App', details: 'Sample', user: 'Admin' }
+            ];
+        }
+
+        // --- LOGIN & SOUND ---
         function sendOTP() {
             const phone = document.getElementById('phoneInput').value;
-            if (phone.length < 10) return alert("Valid number dalein.");
-            alert("OTP: 1234");
+            if (phone.length < 10) {
+                alert("Please enter a valid mobile number.");
+                return;
+            }
+            alert("Verification Code sent to " + phone + "\nUse Code: 1234");
             document.getElementById('otpBtn').style.display = 'none';
             document.getElementById('otp-section').style.display = 'block';
             currentUserPhone = phone;
         }
 
         function verifyOTP() {
-            if (document.getElementById('otpInput').value === "1234") {
+            const otp = document.getElementById('otpInput').value;
+            if (otp === "1234") {
                 document.getElementById('login-page').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
-                currentUserId = "USER" + phoneInput.value.slice(-4);
+                currentUserId = "USER" + Math.floor(Math.random() * 10000);
                 
                 // Welcome Sound
                 if ('speechSynthesis' in window) {
-                    let msg = new SpeechSynthesisUtterance("Welcome to Colour Artist Anshika World");
+                    let msg = new SpeechSynthesisUtterance();
+                    msg.text = "Welcome to Colour Artist Anshika World";
+                    msg.rate = 0.9;
+                    msg.pitch = 1.1;
                     window.speechSynthesis.speak(msg);
                 }
                 
-                // Load Data from Firebase
-                loadArtsFromFirebase();
-            } else { alert("Wrong OTP"); }
-        }
-
-        // --- FIREBASE LOGIC ---
-        function loadArtsFromFirebase() {
-            const artRef = db.ref('arts');
-            artRef.on('value', (snapshot) => {
-                const data = snapshot.val();
-                arts = []; // Clear local list
-                if (data) {
-                    // Convert Object to Array
-                    Object.keys(data).forEach(key => {
-                        arts.unshift(data[key]); // Add to top
-                    });
-                }
                 renderGallery('home-gallery');
                 renderGallery('explore-gallery');
+            } else {
+                alert("Invalid Verification Code!");
+            }
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabName) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+            if(tabName === 'home') {
+                document.getElementById('home-section').classList.add('active');
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                renderGallery('home-gallery'); // Refresh
+            } else if(tabName === 'search') {
+                document.getElementById('search-section').classList.add('active');
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+            } else if(tabName === 'add') {
+                document.getElementById('add-section').classList.add('active');
+            } else if(tabName === 'explore') {
+                document.getElementById('explore-section').classList.add('active');
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
+                renderGallery('explore-gallery'); // Refresh
+            }
+        }
+
+        function openMenu() {
+            document.getElementById('side-menu').classList.add('open');
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeMenu() {
+            document.getElementById('side-menu').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // --- ART GALLERY FUNCTIONS ---
+        function renderGallery(containerId, data = arts) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            if(data.length === 0) {
+                container.innerHTML = "<p style='text-align:center; width:100%; color:#888; margin-top:20px;'>No arts found.</p>";
+                return;
+            }
+            data.forEach((art, index) => {
+                const card = `
+                    <div class="art-card">
+                        <img src="${art.img}" alt="Art">
+                        <div class="art-info">
+                            <div class="art-title">${art.desc}</div>
+                            <div class="art-desc">By: ${art.user} | ID: ${art.id}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteArt('${art.id}')">×</button>
+                    </div>
+                `;
+                container.innerHTML += card;
             });
+        }
+
+        // --- SAVE TO LOCAL STORAGE ---
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(arts));
+            } catch (e) {
+                alert("Storage is full! The image is too large. Please upload smaller images.");
+                arts.shift(); 
+            }
         }
 
         function submitArt() {
@@ -240,44 +611,48 @@ const analytics = getAnalytics(app);
             const details = document.getElementById('artDetails').value;
             const submitBtn = document.getElementById('submitBtn');
 
-            if(fileInput.files.length === 0 || desc === "") {
-                return alert("Image aur Description zaroori hai.");
+            if(fileInput.files.length === 0) {
+                alert("Please select an image first.");
+                return;
+            }
+            if(desc === "") {
+                alert("Please enter a description.");
+                return;
             }
 
-            submitBtn.innerText = "Uploading to Cloud...";
+            submitBtn.innerText = "Saving...";
             submitBtn.disabled = true;
 
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imgUrl = e.target.result;
                 const newArt = {
-                    id: 'ART' + Date.now(),
+                    id: 'ART' + Math.floor(Math.random() * 9000),
                     img: imgUrl,
                     desc: desc,
                     details: details,
-                    user: currentUserId,
-                    date: new Date().toLocaleDateString()
+                    user: currentUserId
                 };
-
-                // Save to Firebase (Real Cloud)
-                db.ref('arts/' + newArt.id).set(newArt, (error) => {
-                    if (error) {
-                        alert("Error uploading data.");
-                    } else {
-                        alert("Art Uploaded to Server Successfully!");
-                        document.getElementById('artDesc').value = "";
-                        document.getElementById('artDetails').value = "";
-                        fileInput.value = "";
-                        switchTab('explore');
-                    }
-                    submitBtn.innerText = "Submit Art";
-                    submitBtn.disabled = false;
-                });
+                
+                arts.unshift(newArt); 
+                saveToStorage(); 
+                
+                alert("Art Saved Successfully!");
+                
+                document.getElementById('artDesc').value = "";
+                document.getElementById('artDetails').value = "";
+                fileInput.value = "";
+                
+                renderGallery('home-gallery');
+                renderGallery('explore-gallery');
+                switchTab('explore');
+                submitBtn.innerText = "Submit Art";
+                submitBtn.disabled = false;
             };
             
-            // Limit size for Realtime DB (Recommended < 1MB)
-            if(fileInput.files[0].size > 1024 * 1024) {
-                 alert("Photo bohot badi hai. Kripya choti photo (screenshot) upload karein.");
+            if (fileInput.files[0].size > 2 * 1024 * 1024) {
+                 alert("File too big! Please select an image smaller than 2MB.");
+                 submitBtn.innerText = "Submit Art";
                  submitBtn.disabled = false;
                  return;
             }
@@ -285,45 +660,39 @@ const analytics = getAnalytics(app);
             reader.readAsDataURL(fileInput.files[0]);
         }
 
-        // --- UI FUNCTIONS ---
-        function renderGallery(containerId, data = arts) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            if(data.length === 0) {
-                container.innerHTML = "<p style='text-align:center;width:100%;color:#888;'>Loading Arts...</p>";
-                return;
+        function deleteArt(id) {
+            if(confirm("Are you sure you want to delete this art?")) {
+                arts = arts.filter(art => art.id !== id);
+                saveToStorage();
+                renderGallery('home-gallery');
+                renderGallery('explore-gallery');
             }
-            data.forEach(art => {
-                const card = `
-                    <div class="art-card">
-                        <img src="${art.img}" alt="Art">
-                        <div class="art-info">
-                            <div class="art-title">${art.desc}</div>
-                            <div class="art-desc">By: ${art.user}</div>
-                        </div>
-                    </div>`;
-                container.innerHTML += card;
-            });
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(tabName==='home') { document.getElementById('home-section').classList.add('active'); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
-            else if(tabName==='search') { document.getElementById('search-section').classList.add('active'); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
-            else if(tabName==='add') document.getElementById('add-section').classList.add('active');
-            else if(tabName==='explore') { document.getElementById('explore-section').classList.add('active'); document.querySelectorAll('.nav-item')[3].classList.add('active'); }
+        function clearAllData() {
+            if(confirm("Warning: This will delete ALL arts permanently. Continue?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                arts = [];
+                renderGallery('home-gallery');
+                renderGallery('explore-gallery');
+                alert("All data reset.");
+            }
         }
-        function openMenu() { document.getElementById('side-menu').classList.add('open'); document.getElementById('overlay').style.display = 'block'; }
-        function closeMenu() { document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
-        function showProfile() { 
-            document.getElementById('user-phone-display').innerText = currentUserPhone;
-            document.getElementById('user-id-display').innerText = currentUserId;
-            document.getElementById('profile-modal').style.display = 'block'; 
-        }
+
         function filterArts() {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            renderGallery('search-results', arts.filter(a => a.desc.toLowerCase().includes(q)));
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = arts.filter(art => 
+                art.desc.toLowerCase().includes(query) || 
+                art.user.toLowerCase().includes(query) ||
+                art.id.toLowerCase().includes(query)
+            );
+            renderGallery('search-results', filtered);
+        }
+
+        function showProfile() {
+            document.getElementById('user-phone-display').innerText = currentUserPhone || "Not Logged In";
+            document.getElementById('user-id-display').innerText = currentUserId || "N/A";
+            document.getElementById('profile-modal').style.display = 'block';
         }
     </script>
 </body>
