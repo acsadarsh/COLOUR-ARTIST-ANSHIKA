@@ -9,15 +9,14 @@
 
     <style>
         :root {
-            --primary: #ff4081;     /* Pink */
-            --secondary: #3f51b5;   /* Blue */
+            --primary: #ff4081;
+            --secondary: #3f51b5;
             --bg: #f5f5f5;
             --white: #ffffff;
-            --text: #333333;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg); padding-bottom: 70px; }
+        body { background-color: var(--bg); padding-bottom: 70px; overflow-x: hidden; }
 
         /* --- LOGIN SCREEN --- */
         #login-page {
@@ -45,46 +44,62 @@
 
         /* --- HEADER --- */
         header {
-            background: var(--white); padding: 15px; position: sticky; top: 0; z-index: 100;
+            background: var(--white); padding: 10px 15px; position: sticky; top: 0; z-index: 100;
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        .app-title h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.5rem; }
-        .app-title p { font-size: 0.7rem; color: #777; letter-spacing: 1px; }
+        .header-left { display: flex; align-items: center; }
+        .header-logo {
+            width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary);
+            margin-right: 10px; object-fit: cover;
+        }
+        .app-title h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.4rem; line-height: 1.2; }
+        .app-title p { font-size: 0.65rem; color: #777; font-weight: bold; }
+        
+        .menu-btn { font-size: 1.5rem; color: #555; cursor: pointer; }
 
-        /* --- CONTENT SECTIONS --- */
+        /* --- USER ID CARD --- */
+        .user-id-card {
+            background: linear-gradient(135deg, var(--secondary), #7986cb);
+            color: white; padding: 15px; margin: 15px; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(63, 81, 181, 0.3);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .id-text { font-size: 0.8rem; opacity: 0.9; }
+        .id-number { font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; }
+
+        /* --- SECTIONS --- */
         .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- ART CARDS --- */
+        /* --- ART GRID --- */
         .art-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px;
         }
         .art-card {
             background: var(--white); border-radius: 15px; overflow: hidden;
             box-shadow: 0 3px 10px rgba(0,0,0,0.08); position: relative;
         }
-        .art-card img {
-            width: 100%; height: 180px; object-fit: cover;
-        }
+        .art-card img { width: 100%; height: 180px; object-fit: cover; }
         .art-info { padding: 10px; }
         .art-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
         .art-id { font-size: 0.7rem; color: #888; }
         
-        .delete-btn {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(255,0,0,0.8); color: white;
-            width: 30px; height: 30px; border-radius: 50%; border: none;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        /* --- SIDE MENU --- */
+        #side-menu {
+            position: fixed; top: 0; right: -100%; width: 280px; height: 100%;
+            background: var(--white); z-index: 1500; transition: 0.3s;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 20px;
         }
-
-        /* --- ADD ART FORM --- */
-        .upload-box {
-            background: var(--white); padding: 20px; border-radius: 15px;
-            text-align: center; border: 2px dashed #ddd; margin-bottom: 20px;
+        #side-menu.open { right: 0; }
+        .menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .menu-link { display: flex; align-items: center; padding: 15px 0; color: #333; text-decoration: none; font-size: 1rem; border-bottom: 1px solid #f9f9f9; }
+        .menu-link i { margin-right: 15px; width: 25px; color: var(--primary); }
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1400; display: none;
         }
-        textarea { width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 10px; resize: none; margin: 10px 0; }
 
         /* --- BOTTOM NAV --- */
         .bottom-nav {
@@ -95,8 +110,6 @@
         .nav-item { text-align: center; color: #999; font-size: 0.7rem; flex: 1; cursor: pointer; }
         .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary); }
-        
-        /* Floating Add Button */
         .nav-fab {
             background: var(--secondary); color: white;
             width: 55px; height: 55px; border-radius: 50%;
@@ -105,57 +118,71 @@
             box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4);
         }
 
+        /* --- ADD FORM --- */
+        .upload-box { background: var(--white); padding: 20px; border-radius: 15px; text-align: center; border: 2px dashed #ddd; margin-bottom: 20px; }
+        textarea { width: 100%; border: 1px solid #ddd; padding: 10px; border-radius: 10px; resize: none; margin: 10px 0; }
+
     </style>
 </head>
 <body>
 
     <div id="login-page">
-        <img src="https://ibb.co/3mVC1DF1" class="logo-circle" alt="Logo">
-        <h2 style="margin-bottom: 5px;">Artist Ms Jyoti</h2>
-        <p style="color: #666; margin-bottom: 20px;">Colour Artist Anshika App</p>
+        <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/150/ff4081/ffffff?text=Logo'" class="logo-circle" alt="App Logo">
         
-        <input type="tel" id="phoneInput" class="input-box" placeholder="Mobile Number">
-        <button class="btn-main" onclick="sendOTP()" id="otpBtn">Get Code</button>
+        <h2 style="margin-bottom: 5px; font-family: 'Dancing Script', cursive; font-size: 2rem;">Artist Ms Jyoti</h2>
+        <p style="color: #666; margin-bottom: 30px;">Login to get your ACS ID</p>
+        
+        <input type="tel" id="phoneInput" class="input-box" placeholder="Mobile Number (+91)">
+        <button class="btn-main" onclick="sendOTP()" id="otpBtn">Get Verification Code</button>
         
         <div id="otp-area" style="display: none; width: 100%; text-align: center;">
-            <input type="text" id="otpInput" class="input-box" placeholder="Enter 1234">
-            <button class="btn-main" style="background: var(--secondary);" onclick="verifyOTP()">Login</button>
+            <input type="text" id="otpInput" class="input-box" placeholder="Enter Code: 1234">
+            <button class="btn-main" style="background: var(--secondary);" onclick="verifyOTP()">Login & Get ID</button>
         </div>
     </div>
 
     <div id="app-screen" style="display: none;">
         
         <header>
-            <div class="app-title">
-                <h1>Colour Artist Anshika</h1>
-                <p>Welcome, <span id="user-name-display">Guest</span></p>
+            <div class="header-left">
+                <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/50/ff4081/ffffff?text=L'" class="header-logo" alt="Logo">
+                <div class="app-title">
+                    <h1>Colour Artist</h1>
+                    <p>ANSHIKA ART GALLERY</p>
+                </div>
             </div>
-            <i class="fa-solid fa-circle-user" style="font-size: 2rem; color: #ccc;" onclick="logout()"></i>
+            <i class="fa-solid fa-bars menu-btn" onclick="openMenu()"></i>
         </header>
 
         <section id="home" class="section active">
-            <h3 style="margin-bottom: 15px; color: var(--secondary);">My Gallery</h3>
+            
+            <div class="user-id-card">
+                <div>
+                    <div class="id-text">Welcome, User</div>
+                    <div class="id-text" style="font-size: 0.7rem;">Your Unique ID:</div>
+                </div>
+                <div class="id-number" id="display-user-id">LOADING...</div>
+            </div>
+
+            <h3 style="margin-bottom: 15px; color: var(--secondary); padding-left: 5px;">My Art Collection</h3>
             <div id="gallery-container" class="art-grid">
                 </div>
         </section>
 
         <section id="add" class="section">
             <h3 style="text-align: center; margin-bottom: 20px;">Upload New Art</h3>
-            
             <div class="upload-box">
                 <i class="fa-solid fa-cloud-arrow-up" style="font-size: 3rem; color: var(--secondary); margin-bottom: 10px;"></i>
-                <p>Select Photo</p>
+                <p>Tap to Select Photo</p>
                 <input type="file" id="artFile" accept="image/*" style="margin-top: 10px;">
             </div>
-
-            <input type="text" id="artTitle" class="input-box" style="width: 100%; text-align: left;" placeholder="Art Title (e.g. Mandala)">
-            <textarea id="artDesc" rows="3" placeholder="Description or Details..."></textarea>
-            
-            <button class="btn-main" onclick="saveArt()" id="saveBtn">Save Art</button>
+            <input type="text" id="artTitle" class="input-box" style="width: 100%; text-align: left;" placeholder="Art Name">
+            <textarea id="artDesc" rows="3" placeholder="Description..."></textarea>
+            <button class="btn-main" onclick="saveArt()" id="saveBtn">Save to Gallery</button>
         </section>
 
         <section id="search" class="section">
-            <input type="text" class="input-box" style="width: 100%; text-align: left;" placeholder="Search Arts..." onkeyup="searchArt(this.value)">
+            <input type="text" class="input-box" style="width: 100%; text-align: left;" placeholder="Search by ID or Name..." onkeyup="searchArt(this.value)">
             <div id="search-container" class="art-grid" style="margin-top: 20px;"></div>
         </section>
 
@@ -169,24 +196,76 @@
             <div class="nav-fab" onclick="nav('add')">
                 <i class="fa-solid fa-plus"></i>
             </div>
-            <div class="nav-item" onclick="nav('home')"> <i class="fa-solid fa-compass"></i> Explore
+            <div class="nav-item" onclick="nav('home')"> 
+                <i class="fa-solid fa-compass"></i> Explore
             </div>
-            <div class="nav-item" onclick="alert('Menu coming soon!')">
-                <i class="fa-solid fa-bars"></i> Menu
+            <div class="nav-item" onclick="openMenu()">
+                <i class="fa-solid fa-user"></i> Profile
             </div>
         </nav>
+
+        <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+        <div id="side-menu">
+            <div class="menu-header">
+                <h3>Menu</h3>
+                <i class="fa-solid fa-xmark" onclick="closeMenu()" style="font-size: 1.5rem; cursor:pointer;"></i>
+            </div>
+
+            <a href="#" class="menu-link">
+                <i class="fa-solid fa-id-card"></i> <span id="menu-user-id">ID: Checking...</span>
+            </a>
+            <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-link">
+                <i class="fa-brands fa-youtube" style="color: red;"></i> YouTube Channel
+            </a>
+            <a href="https://wa.me/918252900810" target="_blank" class="menu-link">
+                <i class="fa-brands fa-whatsapp" style="color: green;"></i> WhatsApp Contact
+            </a>
+            <a href="#" class="menu-link">
+                <i class="fa-solid fa-circle-info"></i> About App
+            </a>
+            <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #eee;">
+                <button onclick="logout()" style="background: #ffebee; color: red; border: none; padding: 10px; width: 100%; border-radius: 5px;">Logout</button>
+            </div>
+        </div>
 
     </div>
 
     <script>
-        // --- DATABASE SETUP (LocalStorage) ---
-        const DB_KEY = "anshika_art_gallery_v2";
+        // --- CONFIGURATION ---
+        const DB_KEY = "anshika_gallery_db";
+        const USER_KEY = "anshika_user_id_storage";
+        
         let arts = JSON.parse(localStorage.getItem(DB_KEY)) || [];
+        let currentUserID = localStorage.getItem(USER_KEY) || "";
 
-        // --- AUTHENTICATION ---
+        // --- AUTO-LOGIN CHECK (यह रिफ्रेश पर लॉगआउट होने से रोकेगा) ---
+        if (currentUserID) {
+            // अगर ID पहले से सेव है, तो Login पेज हटाओ और App दिखाओ
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('app-screen').style.display = 'block';
+            
+            // ID सेट करो
+            setTimeout(() => {
+                document.getElementById('display-user-id').innerText = currentUserID;
+                document.getElementById('menu-user-id').innerText = currentUserID;
+                loadGallery();
+            }, 100);
+        }
+
+        // --- 1. ID GENERATOR LOGIC ---
+        function generateUserID() {
+            if (!currentUserID) {
+                const randomNum = Math.floor(1000 + Math.random() * 9000);
+                currentUserID = "ACS-USER-" + randomNum;
+                localStorage.setItem(USER_KEY, currentUserID);
+            }
+            document.getElementById('display-user-id').innerText = currentUserID;
+            document.getElementById('menu-user-id').innerText = currentUserID;
+        }
+
+        // --- 2. LOGIN LOGIC ---
         function sendOTP() {
-            const phone = document.getElementById('phoneInput').value;
-            if(!phone) return alert("Enter Number!");
+            if(!document.getElementById('phoneInput').value) return alert("Enter Mobile Number");
             alert("OTP Sent: 1234");
             document.getElementById('otpBtn').style.display = 'none';
             document.getElementById('otp-area').style.display = 'block';
@@ -196,23 +275,37 @@
             if(document.getElementById('otpInput').value === "1234") {
                 document.getElementById('login-page').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
+                generateUserID();
                 loadGallery();
                 
-                // Voice Welcome
                 if('speechSynthesis' in window) {
                     let msg = new SpeechSynthesisUtterance("Welcome to Colour Artist Anshika App");
                     window.speechSynthesis.speak(msg);
                 }
             } else {
-                alert("Wrong Code!");
+                alert("Incorrect OTP");
             }
         }
 
-        function logout() {
-            location.reload();
+        // --- 3. MENU FUNCTIONS ---
+        function openMenu() {
+            document.getElementById('side-menu').classList.add('open');
+            document.getElementById('overlay').style.display = 'block';
         }
 
-        // --- NAVIGATION ---
+        function closeMenu() {
+            document.getElementById('side-menu').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function logout() {
+            if(confirm("Are you sure you want to Logout?")) {
+                localStorage.removeItem(USER_KEY); // सिर्फ logout पर ही ID हटाओ
+                location.reload();
+            }
+        }
+
+        // --- 4. NAVIGATION ---
         function nav(tabId) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -222,15 +315,12 @@
             if(tabId === 'home') {
                 loadGallery();
                 document.querySelectorAll('.nav-item')[0].classList.add('active');
-            } else if (tabId === 'add') {
-                 // No specific nav item to highlight for FAB
             } else if (tabId === 'search') {
                 document.querySelectorAll('.nav-item')[1].classList.add('active');
             }
         }
 
-        // --- IMAGE COMPRESSOR (The Magic Part) ---
-        // This function shrinks the image so it saves fast!
+        // --- 5. IMAGE COMPRESSOR ---
         function compressImage(file, callback) {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -240,67 +330,51 @@
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    
-                    // Resize logic: Max width 600px
-                    const maxWidth = 600;
+                    const maxWidth = 500;
                     const scaleFactor = maxWidth / img.width;
                     canvas.width = maxWidth;
                     canvas.height = img.height * scaleFactor;
-
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    
-                    // Export as JPEG with 0.7 quality
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                    callback(dataUrl);
+                    callback(canvas.toDataURL('image/jpeg', 0.7));
                 }
             }
         }
 
-        // --- CORE FUNCTIONS ---
+        // --- 6. SAVE & LOAD ART ---
         function saveArt() {
             const fileInput = document.getElementById('artFile');
             const title = document.getElementById('artTitle').value;
             const desc = document.getElementById('artDesc').value;
             const btn = document.getElementById('saveBtn');
 
-            if(fileInput.files.length === 0) return alert("Please select an image!");
-            if(!title) return alert("Please enter a title!");
-
-            btn.innerText = "Compressing & Saving...";
+            if(fileInput.files.length === 0) return alert("Please select an image");
+            
+            btn.innerText = "Processing...";
             btn.disabled = true;
 
-            // 1. Compress the image
-            compressImage(fileInput.files[0], function(compressedImage) {
-                
-                // 2. Create Art Object
+            compressImage(fileInput.files[0], function(compressedImg) {
                 const newArt = {
-                    id: Date.now(), // Unique ID based on time
-                    img: compressedImage,
-                    title: title,
-                    desc: desc,
-                    date: new Date().toLocaleDateString()
+                    id: Date.now(),
+                    img: compressedImg,
+                    title: title || "Untitled Art",
+                    desc: desc || "",
+                    userID: currentUserID
                 };
 
-                // 3. Save to List
-                arts.unshift(newArt); // Add to top
-
-                // 4. Save to LocalStorage
+                arts.unshift(newArt);
+                
                 try {
                     localStorage.setItem(DB_KEY, JSON.stringify(arts));
-                    alert("Success! Art Saved.");
-                    
-                    // Reset Form
+                    alert("Art Saved!");
                     document.getElementById('artTitle').value = "";
                     document.getElementById('artDesc').value = "";
                     fileInput.value = "";
-                    nav('home'); // Go back to home
-                    
+                    nav('home');
                 } catch (e) {
-                    alert("Storage Full! Delete some old arts to make space.");
-                    arts.shift(); // Undo the add
+                    alert("Memory Full!");
+                    arts.shift();
                 }
-
-                btn.innerText = "Save Art";
+                btn.innerText = "Save to Gallery";
                 btn.disabled = false;
             });
         }
@@ -310,50 +384,35 @@
             container.innerHTML = "";
             
             if(arts.length === 0) {
-                container.innerHTML = "<p style='width:100%; text-align:center; margin-top:50px; color:#999;'>No arts yet. Click + to add.</p>";
+                container.innerHTML = "<p style='width:100%; text-align:center; color:#999; margin-top:20px;'>No arts found.</p>";
                 return;
             }
 
             arts.forEach(art => {
                 const html = `
                     <div class="art-card">
-                        <img src="${art.img}" alt="Art">
-                        <button class="delete-btn" onclick="deleteArt(${art.id})"><i class="fa-solid fa-trash"></i></button>
+                        <img src="${art.img}">
                         <div class="art-info">
                             <div class="art-title">${art.title}</div>
-                            <div class="art-id">${art.desc}</div>
-                            <div class="art-id" style="margin-top:5px; font-size:0.6rem;">${art.date}</div>
+                            <div class="art-id" style="color: var(--secondary); font-size: 0.7rem;">Owner: ${art.userID}</div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 container.innerHTML += html;
             });
-        }
-
-        function deleteArt(id) {
-            if(confirm("Are you sure you want to delete this art?")) {
-                arts = arts.filter(a => a.id !== id); // Remove item
-                localStorage.setItem(DB_KEY, JSON.stringify(arts)); // Update Storage
-                loadGallery(); // Refresh View
-            }
         }
 
         function searchArt(query) {
             const container = document.getElementById('search-container');
             container.innerHTML = "";
             const term = query.toLowerCase();
-            
-            const filtered = arts.filter(a => a.title.toLowerCase().includes(term) || a.desc.toLowerCase().includes(term));
+            const filtered = arts.filter(a => a.title.toLowerCase().includes(term) || (a.userID && a.userID.toLowerCase().includes(term)));
             
             filtered.forEach(art => {
                 container.innerHTML += `
                     <div class="art-card">
                         <img src="${art.img}">
-                        <div class="art-info">
-                            <div class="art-title">${art.title}</div>
-                        </div>
-                    </div>
-                `;
+                        <div class="art-info"><div class="art-title">${art.title}</div></div>
+                    </div>`;
             });
         }
     </script>
