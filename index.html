@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colour Artist Anshika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #ff4081;
+            --secondary-color: #3f51b5; /* Blue for Plus Button */
+            --bg-color: #fce4ec;
+            --text-color: #333;
+            --green-border: #00e676;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            padding-bottom: 80px; /* Space for bottom nav */
+        }
+
+        /* --- LOGIN PAGE --- */
+        #login-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--green-border);
+            box-shadow: 0 0 15px var(--green-border);
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* --- MAIN APP HEADER --- */
+        header {
+            background: white;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .main-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--green-border);
+            box-shadow: 0 0 8px var(--green-border);
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .title-container h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .title-container p {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #555;
+        }
+
+        .profile-icon {
+            font-size: 1.5rem;
+            color: #555;
+            cursor: pointer;
+        }
+
+        /* --- SECTIONS --- */
+        .section {
+            display: none;
+            padding: 15px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Art Grid */
+        .art-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .art-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .art-info {
+            padding: 10px;
+        }
+
+        .art-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .art-desc {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        /* --- SEARCH --- */
+        .search-bar {
+            width: 100%;
+            padding: 15px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        /* --- ADD ART FORM --- */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        /* --- BOTTOM NAVIGATION --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            height: 60px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 500;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #888;
+            font-size: 0.7rem;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item i {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        /* The Big Blue Plus Button */
+        .nav-item-plus {
+            position: relative;
+            top: -20px;
+            background: var(--secondary-color);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .nav-item-plus i {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .nav-item-plus:active {
+            transform: scale(0.95) translateY(-20px);
+        }
+
+        /* --- SIDE MENU (DRAWER) --- */
+        #side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Hidden by default */
+            width: 80%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            transition: 0.3s;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        #side-menu.open {
+            right: 0;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            color: #333;
+            text-decoration: none;
+            font-size: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .menu-link i {
+            margin-right: 15px;
+            width: 25px;
+            color: var(--primary-color);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+        }
+
+        /* Customer Profile Modal */
+        #profile-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 3000;
+            text-align: center;
+            width: 80%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <img src="https://ibb.co/3mVC1DF1" alt="Logo" class="login-logo"> <h2 style="font-family: 'Dancing Script', cursive; margin-bottom: 20px;">Artist MS JYOTI</h2>
+        <div class="login-box">
+            <p style="margin-bottom: 10px; font-size: 0.9rem;">Create ID / Login</p>
+            <input type="tel" id="phoneInput" placeholder="Enter Mobile Number (+91...)">
+            <button class="btn" onclick="sendOTP()" id="otpBtn">Get Verification Code</button>
+            
+            <div id="otp-section" style="display: none;">
+                <input type="text" id="otpInput" placeholder="Enter Verification Code">
+                <button class="btn" style="background: var(--green-border);" onclick="verifyOTP()">Verify & Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-screen" style="display: none;">
+        
+        <header>
+            <div class="header-left">
+                <img src="https://i.ibb.co/Wvj3gq5/placeholder-logo.png" onerror="this.src='https://via.placeholder.com/50'" alt="Logo" class="main-logo">
+                <div class="title-container">
+                    <h1>Colour Artist Anshika</h1>
+                    <p>ARTIST MS JYOTI</p>
+                </div>
+            </div>
+            <div class="profile-icon" onclick="showProfile()">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+        </header>
+
+        <section id="home-section" class="section active">
+            <h3 style="margin-bottom: 15px;">Latest Arts</h3>
+            <div class="art-grid" id="home-gallery">
+                </div>
+        </section>
+
+        <section id="search-section" class="section">
+            <h3>Search Arts</h3>
+            <input type="text" class="search-bar" id="searchInput" placeholder="Search by ID or Description..." onkeyup="filterArts()">
+            <div class="art-grid" id="search-results">
+                </div>
+        </section>
+
+        <section id="add-section" class="section">
+            <h2 style="text-align: center; color: var(--secondary-color); margin-bottom: 20px;">Add New Art</h2>
+            <div style="background: white; padding: 20px; border-radius: 10px;">
+                <div class="form-group">
+                    <label>Upload Image</label>
+                    <input type="file" id="artImage" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Description (Tags/Name)</label>
+                    <input type="text" id="artDesc" placeholder="e.g. Mandala art, Pencil sketch...">
+                </div>
+                <div class="form-group">
+                    <label>How to Image (Details)</label>
+                    <textarea id="artDetails" style="width:100%; padding:10px; border:1px solid #ddd;" rows="3" placeholder="Explain about the art..."></textarea>
+                </div>
+                <button class="btn" style="background: var(--secondary-color);" onclick="submitArt()">Submit Art</button>
+            </div>
+        </section>
+
+        <section id="explore-section" class="section">
+            <h3 style="margin-bottom: 15px;">Explore All Arts</h3>
+            <div class="art-grid" id="explore-gallery">
+                </div>
+        </section>
+
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('home')">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('search')">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Search</span>
+            </div>
+            <div class="nav-item-plus" onclick="switchTab('add')">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <div class="nav-item" onclick="switchTab('explore')">
+                <i class="fa-solid fa-compass"></i>
+                <span>Explore</span>
+            </div>
+            <div class="nav-item" onclick="openMenu()">
+                <i class="fa-solid fa-bars"></i>
+                <span>Menu</span>
+            </div>
+        </nav>
+
+        <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+        <div id="side-menu">
+            <div class="menu-header">
+                <h3>Menu</h3>
+                <i class="fa-solid fa-xmark" onclick="closeMenu()" style="font-size: 1.5rem;"></i>
+            </div>
+
+            <a href="https://youtube.com/@colourartistanshika?si=cIEpCKHISRcBGhwO" target="_blank" class="menu-link">
+                <i class="fa-brands fa-youtube" style="color: red;"></i> YouTube Channel
+            </a>
+            <a href="#" class="menu-link">
+                <i class="fa-solid fa-images"></i> Photo Album
+            </a>
+            <a href="#" onclick="alert('This website allows you to upload and view beautiful arts by MS Jyoti and others.')" class="menu-link">
+                <i class="fa-solid fa-circle-info"></i> How to use this website
+            </a>
+            <div style="margin-top: 20px; font-weight: bold; color: #888;">Contact</div>
+            <a href="mailto:kumarijyoti24361@gmail.com" class="menu-link">
+                <i class="fa-solid fa-envelope"></i> Email: kumarijyoti...
+            </a>
+            <a href="https://wa.me/918252900810" class="menu-link">
+                <i class="fa-brands fa-whatsapp" style="color: green;"></i> WhatsApp: 8252900810
+            </a>
+            
+            <a href="https://wa.me/918252900810" class="menu-link" style="background: #e3f2fd; border-radius: 5px; padding: 15px; margin-top: 10px;">
+                <i class="fa-solid fa-comments" style="color: var(--secondary-color);"></i> 
+                <b>Chat Us</b>
+            </a>
+        </div>
+        
+        <div id="profile-modal">
+            <h3>User Profile</h3>
+            <p id="user-phone-display" style="font-size: 1.2rem; color: var(--primary-color); margin: 10px 0;"></p>
+            <p>ID: <span id="user-id-display"></span></p>
+            <button class="btn" onclick="document.getElementById('profile-modal').style.display='none'">Close</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentUserPhone = "";
+        let currentUserId = "";
+
+        // Sample Data (Simulated Database)
+        let arts = [
+            { id: 'ART001', img: 'https://via.placeholder.com/300/ff4081/ffffff?text=Art+1', desc: 'Mandala Art Design', user: 'Admin' },
+            { id: 'ART002', img: 'https://via.placeholder.com/300/3f51b5/ffffff?text=Art+2', desc: 'Pencil Sketch Portrait', user: 'Admin' },
+            { id: 'ART003', img: 'https://via.placeholder.com/300/00e676/ffffff?text=Art+3', desc: 'Water Colour Scenery', user: 'User1' }
+        ];
+
+        // --- LOGIN FUNCTIONS ---
+        function sendOTP() {
+            const phone = document.getElementById('phoneInput').value;
+            if (phone.length < 10) {
+                alert("Please enter a valid mobile number.");
+                return;
+            }
+            // Simulate sending OTP
+            alert("Verification Code sent to " + phone + "\nUse Code: 1234");
+            document.getElementById('otpBtn').style.display = 'none';
+            document.getElementById('otp-section').style.display = 'block';
+            currentUserPhone = phone;
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('otpInput').value;
+            if (otp === "1234") {
+                // Login Success
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('app-screen').style.display = 'block';
+                
+                // Generate Random ID
+                currentUserId = "USER" + Math.floor(Math.random() * 10000);
+                
+                // Load Arts
+                renderGallery('home-gallery');
+                renderGallery('explore-gallery');
+            } else {
+                alert("Invalid Verification Code!");
+            }
+        }
+
+        // --- NAVIGATION ---
+        function switchTab(tabName) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+            if(tabName === 'home') {
+                document.getElementById('home-section').classList.add('active');
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+            } else if(tabName === 'search') {
+                document.getElementById('search-section').classList.add('active');
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+            } else if(tabName === 'add') {
+                document.getElementById('add-section').classList.add('active');
+            } else if(tabName === 'explore') {
+                document.getElementById('explore-section').classList.add('active');
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
+            }
+        }
+
+        function openMenu() {
+            document.getElementById('side-menu').classList.add('open');
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeMenu() {
+            document.getElementById('side-menu').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        // --- ART GALLERY FUNCTIONS ---
+        function renderGallery(containerId, data = arts) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+            data.forEach(art => {
+                const card = `
+                    <div class="art-card">
+                        <img src="${art.img}" alt="Art">
+                        <div class="art-info">
+                            <div class="art-title">${art.desc}</div>
+                            <div class="art-desc">By: ${art.user} | ID: ${art.id}</div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function submitArt() {
+            const fileInput = document.getElementById('artImage');
+            const desc = document.getElementById('artDesc').value;
+            const details = document.getElementById('artDetails').value;
+
+            if(fileInput.files.length === 0 || desc === "") {
+                alert("Please select an image and enter a description.");
+                return;
+            }
+
+            // Create a fake URL for the uploaded image (Browser simulation)
+            const imgUrl = URL.createObjectURL(fileInput.files[0]);
+            
+            const newArt = {
+                id: 'ART' + Math.floor(Math.random() * 9000),
+                img: imgUrl,
+                desc: desc,
+                user: currentUserId
+            };
+
+            // Add to data array
+            arts.unshift(newArt); // Add to top
+
+            alert("Art Submitted Successfully! Check Explore/Home section.");
+            
+            // Clear inputs
+            document.getElementById('artDesc').value = "";
+            document.getElementById('artDetails').value = "";
+            fileInput.value = "";
+
+            // Refresh Galleries
+            renderGallery('home-gallery');
+            renderGallery('explore-gallery');
+            switchTab('explore');
+        }
+
+        function filterArts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = arts.filter(art => 
+                art.desc.toLowerCase().includes(query) || 
+                art.user.toLowerCase().includes(query) ||
+                art.id.toLowerCase().includes(query)
+            );
+            renderGallery('search-results', filtered);
+        }
+
+        // --- PROFILE ---
+        function showProfile() {
+            document.getElementById('user-phone-display').innerText = currentUserPhone;
+            document.getElementById('user-id-display').innerText = currentUserId;
+            document.getElementById('profile-modal').style.display = 'block';
+        }
+
+    </script>
+</body>
+</html>
