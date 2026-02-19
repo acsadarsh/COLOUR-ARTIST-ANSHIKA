@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anshika Art App - Pro Online</title>
+    <title>Anshika Art App - Full Version</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #ff4081; --secondary: #3f51b5; --bg: #f8f9fa; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg); padding-bottom: 70px; }
+        body { background-color: var(--bg); padding-bottom: 70px; transition: 0.3s; }
 
         /* Login & Registration */
         #login-page { position: fixed; inset: 0; background: var(--white); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
@@ -20,39 +20,53 @@
         .status-icon.green { color: #4caf50; display: block; }
         .status-icon.red { color: #f44336; display: block; }
         
-        .avatar-upload { width: 80px; height: 80px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 10px; overflow: hidden; border: 2px dashed #ccc; }
+        .avatar-upload { width: 85px; height: 85px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-bottom: 15px; overflow: hidden; border: 2px dashed var(--primary); }
         .avatar-upload img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Main UI */
-        header { background: var(--white); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .section { display: none; padding: 15px; animation: fadeIn 0.3s; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Profile Style */
-        .profile-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .profile-img-large { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 10px; object-fit: cover; }
+        /* App UI Elements */
+        header { background: var(--white); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .header-user { display: flex; align-items: center; gap: 10px; }
+        .header-user img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
         
-        .btn-action { width: 100%; max-width: 300px; padding: 12px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; }
-        .nav-item { color: #999; text-align: center; font-size: 0.7rem; flex: 1; cursor: pointer; }
+        .section { display: none; padding: 20px; animation: slideUp 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Post Card Placeholder */
+        .post-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .post-img { width: 100%; border-radius: 10px; margin: 10px 0; }
+
+        /* Profile Page */
+        .profile-header { text-align: center; background: white; padding: 30px 20px; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .profile-img-container { position: relative; width: 110px; margin: 0 auto 15px; }
+        .profile-img-large { width: 110px; height: 110px; border-radius: 50%; border: 4px solid var(--white); box-shadow: 0 0 15px rgba(255, 64, 129, 0.3); object-fit: cover; }
+        .edit-badge { position: absolute; bottom: 5px; right: 5px; background: var(--primary); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; cursor: pointer; }
+
+        .btn-action { width: 100%; max-width: 300px; padding: 14px; border: none; border-radius: 30px; background: linear-gradient(45deg, var(--primary), #ff80ab); color: white; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3); }
+        .btn-action:active { transform: scale(0.98); }
+
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #f0f0f0; padding-bottom: 5px; }
+        .nav-item { color: #bdc3c7; text-align: center; font-size: 0.75rem; flex: 1; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 1.2rem; display: block; }
+        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
     <div id="login-page">
-        <h2 style="margin-bottom: 20px; color: var(--secondary);">Create Your Account</h2>
+        <h2 style="margin-bottom: 10px; color: var(--secondary);">Welcome to App</h2>
+        <p style="color: #888; margin-bottom: 25px;">Create your profile to continue</p>
         
         <label class="avatar-upload" for="reg-photo">
-            <div id="photo-placeholder"><i class="fa-solid fa-camera"></i><br><small>Photo</small></div>
+            <div id="photo-placeholder" style="text-align:center;"><i class="fa-solid fa-user-plus" style="font-size: 1.5rem; color: #aaa;"></i><br><small style="font-size: 10px;">Add Photo</small></div>
             <img id="reg-preview" src="" style="display:none;">
         </label>
         <input type="file" id="reg-photo" accept="image/*" style="display:none;" onchange="previewRegPhoto(this)">
 
         <div class="input-group">
-            <input type="text" id="reg-username" class="input-box" placeholder="Choose Unique Username" oninput="checkUsername(this.value)">
+            <input type="text" id="reg-username" class="input-box" placeholder="Unique Username" oninput="checkUsername(this.value)">
             <i id="tick-icon" class="fa-solid status-icon"></i>
         </div>
 
@@ -64,7 +78,7 @@
             <input type="tel" id="reg-phone" class="input-box" placeholder="Mobile Number">
         </div>
 
-        <button class="btn-action" onclick="sendOTP()" id="otp-send-btn">Send OTP</button>
+        <button class="btn-action" onclick="sendOTP()" id="otp-send-btn">Get Started</button>
 
         <div id="otp-section" style="display:none; width: 100%; text-align: center; margin-top: 15px;">
             <div class="input-group" style="margin: 0 auto 15px;">
@@ -76,36 +90,65 @@
 
     <div id="main-app" style="display:none;">
         <header>
-            <div style="display:flex; align-items:center;">
-                <img id="header-avatar" src="" style="width:35px; height:35px; border-radius:50%; margin-right:10px; object-fit: cover;">
-                <span id="header-name" style="font-weight:600;">User</span>
+            <div class="header-user">
+                <img id="header-avatar" src="">
+                <span id="header-name">User</span>
             </div>
-            <i class="fa-solid fa-bell"></i>
+            <div style="display:flex; gap: 15px; font-size: 1.2rem; color: #555;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <i class="fa-solid fa-bell"></i>
+            </div>
         </header>
 
         <section id="home" class="section active">
-            <h3>Feed</h3>
-            <p style="color:#888;">Posts will appear here...</p>
+            <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 15px;">
+                <h3 style="font-weight: 600;">Latest Feed</h3>
+                <i class="fa-solid fa-sliders" style="color: var(--primary);"></i>
+            </div>
+            
+            <div class="post-card">
+                <div class="post-header">
+                    <img src="https://via.placeholder.com/40" style="border-radius:50%;">
+                    <div>
+                        <div style="font-size: 0.9rem; font-weight:600;">System Admin</div>
+                        <div style="font-size: 0.7rem; color: #aaa;">Just now</div>
+                    </div>
+                </div>
+                <p style="font-size: 0.9rem;">Welcome to the new version! Enjoy your personalized profile.</p>
+                <div style="margin-top:15px; display:flex; gap: 15px; color: #666;">
+                    <span><i class="fa-regular fa-heart"></i> 12</span>
+                    <span><i class="fa-regular fa-comment"></i> 4</span>
+                </div>
+            </div>
         </section>
 
         <section id="profile" class="section">
-            <div class="profile-card">
-                <label for="profile-change-photo">
-                    <img id="profile-display-img" src="" class="profile-img-large" style="cursor:pointer;">
-                </label>
-                <input type="file" id="profile-change-photo" hidden onchange="updateProfilePhoto(this)">
-                
-                <h2 id="profile-display-name">Name</h2>
-                <p id="profile-display-user" style="color:var(--primary); font-weight:bold;">@username</p>
-                <br>
-                <input type="text" id="edit-name" class="input-box" placeholder="Update Name" style="margin-bottom:10px;">
-                <button class="btn-action" onclick="updateName()">Update Name</button>
-                <button onclick="logout()" style="background:none; border:none; color:red; margin-top:20px; cursor:pointer;">Logout</button>
+            <div class="profile-header">
+                <div class="profile-img-container">
+                    <img id="profile-display-img" src="" class="profile-img-large">
+                    <label for="profile-change-photo" class="edit-badge">
+                        <i class="fa-solid fa-camera" style="font-size: 0.8rem;"></i>
+                    </label>
+                </div>
+                <h2 id="profile-display-name" style="margin-bottom: 5px;">User Name</h2>
+                <p id="profile-display-user" style="color:var(--primary); font-weight:bold; font-size: 0.9rem;">@username</p>
             </div>
+
+            <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                <p style="font-weight: 600; margin-bottom: 15px; color: #444;">Edit Profile Details</p>
+                <div class="input-group" style="max-width: 100%;">
+                    <input type="text" id="edit-name" class="input-box" placeholder="Update Display Name">
+                </div>
+                <button class="btn-action" style="max-width: 100%; margin-bottom: 15px;" onclick="updateName()">Save Changes</button>
+                <button onclick="logout()" style="width:100%; background:none; border: 1px solid #ff5252; color:#ff5252; padding: 10px; border-radius: 25px; font-weight: 600; cursor:pointer;">Sign Out</button>
+            </div>
+            
+            <input type="file" id="profile-change-photo" hidden onchange="updateProfilePhoto(this)">
         </section>
 
         <nav class="bottom-nav">
             <div class="nav-item active" onclick="nav('home')"><i class="fa-solid fa-house"></i>Home</div>
+            <div class="nav-item"><i class="fa-solid fa-plus-square" style="font-size: 1.8rem; color: var(--secondary);"></i></div>
             <div class="nav-item" onclick="nav('profile')"><i class="fa-solid fa-user"></i>Profile</div>
         </nav>
     </div>
@@ -130,30 +173,31 @@
         let tempPhoto = "";
         let generatedOTP = "";
 
-        // Image Compression Function
+        // Helper: Compress Image to save space
         function compressImage(base64Str) {
             return new Promise((resolve) => {
                 const img = new Image();
                 img.src = base64Str;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 200;
+                    const MAX_WIDTH = 250;
                     const scaleSize = MAX_WIDTH / img.width;
                     canvas.width = MAX_WIDTH;
                     canvas.height = img.height * scaleSize;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.6));
+                    resolve(canvas.toDataURL('image/jpeg', 0.7));
                 };
             });
         }
 
-        // Check Username Availability
+        // Logic: Check Username Availability
         window.checkUsername = async (val) => {
             const icon = document.getElementById('tick-icon');
-            if(val.length < 3) { icon.className = "fa-solid status-icon"; return; }
+            const v = val.toLowerCase().trim();
+            if(v.length < 3) { icon.className = "fa-solid status-icon"; return; }
             
-            const q = query(collection(db, "users"), where("username", "==", val.toLowerCase().trim()));
+            const q = query(collection(db, "users"), where("username", "==", v));
             const querySnapshot = await getDocs(q);
             
             if (querySnapshot.empty) {
@@ -179,7 +223,7 @@
         window.sendOTP = () => {
             const user = document.getElementById('reg-username').value;
             const icon = document.getElementById('tick-icon');
-            if(icon.classList.contains('red') || !user) return alert("Username unavailable or empty!");
+            if(icon.classList.contains('red') || !user) return alert("Please select a valid username!");
             
             generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
             alert("Your OTP is: " + generatedOTP);
@@ -193,24 +237,22 @@
             const username = document.getElementById('reg-username').value.toLowerCase().trim();
 
             if(entered !== generatedOTP) return alert("Wrong OTP!");
-            if(!username) return alert("Username is required!");
-
-            btn.innerText = "Processing...";
+            btn.innerText = "Setting up...";
             btn.disabled = true;
 
             try {
                 const userData = {
                     username: username,
                     fullname: document.getElementById('reg-fullname').value || "User",
-                    phone: document.getElementById('reg-phone').value || "N/A",
+                    phone: document.getElementById('reg-phone').value || "No Phone",
                     photo: tempPhoto || "https://via.placeholder.com/150"
                 };
 
-                await setDoc(doc(db, "users", userData.username), userData);
+                await setDoc(doc(db, "users", username), userData);
                 localStorage.setItem("anshika_user", JSON.stringify(userData));
                 location.reload();
             } catch (e) {
-                alert("Error: " + e.message);
+                alert("Something went wrong!");
                 btn.innerText = "Complete Registration";
                 btn.disabled = false;
             }
@@ -218,11 +260,12 @@
 
         window.updateName = async () => {
             const newName = document.getElementById('edit-name').value;
-            if(!newName) return;
+            if(!newName) return alert("Please enter a name");
             let localData = JSON.parse(localStorage.getItem("anshika_user"));
             localData.fullname = newName;
             await setDoc(doc(db, "users", localData.username), localData);
             localStorage.setItem("anshika_user", JSON.stringify(localData));
+            alert("Name Updated!");
             location.reload();
         };
 
@@ -249,6 +292,7 @@
 
         window.logout = () => { localStorage.removeItem("anshika_user"); location.reload(); };
 
+        // Handle Persistance
         const saved = localStorage.getItem("anshika_user");
         if(saved) {
             const data = JSON.parse(saved);
