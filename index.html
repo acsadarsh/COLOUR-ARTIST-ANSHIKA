@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arohi Art - Pro</title>
+    <title>Anshika Art App - Pro Online</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -70,7 +70,7 @@
             <div class="input-group" style="margin: 0 auto 15px;">
                 <input type="text" id="login-otp" class="input-box" placeholder="Provide OTP">
             </div>
-            <button class="btn-action" style="background: var(--secondary);" onclick="finishRegistration()">Complete Registration</button>
+            <button class="btn-action" style="background: var(--secondary);" id="finish-btn" onclick="finishRegistration()">Complete Registration</button>
         </div>
     </div>
 
@@ -114,7 +114,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // Firebase Config (Paste your own config here)
         const firebaseConfig = {
           apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
           authDomain: "anshika-art-app-c3098.firebaseapp.com",
@@ -131,12 +130,30 @@
         let tempPhoto = "";
         let generatedOTP = "";
 
+        // Image Compression Function
+        function compressImage(base64Str) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = base64Str;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 200;
+                    const scaleSize = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scaleSize;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.6));
+                };
+            });
+        }
+
         // Check Username Availability
         window.checkUsername = async (val) => {
             const icon = document.getElementById('tick-icon');
             if(val.length < 3) { icon.className = "fa-solid status-icon"; return; }
             
-            const q = query(collection(db, "users"), where("username", "==", val.toLowerCase()));
+            const q = query(collection(db, "users"), where("username", "==", val.toLowerCase().trim()));
             const querySnapshot = await getDocs(q);
             
             if (querySnapshot.empty) {
@@ -149,9 +166,9 @@
         window.previewRegPhoto = (input) => {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    tempPhoto = e.target.result;
-                    document.getElementById('reg-preview').src = e.target.result;
+                reader.onload = async (e) => {
+                    tempPhoto = await compressImage(e.target.result);
+                    document.getElementById('reg-preview').src = tempPhoto;
                     document.getElementById('reg-preview').style.display = 'block';
                     document.getElementById('photo-placeholder').style.display = 'none';
                 };
@@ -165,28 +182,40 @@
             if(icon.classList.contains('red') || !user) return alert("Username unavailable or empty!");
             
             generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
-            alert("Your OTP is: " + generatedOTP); // For demo
+            alert("Your OTP is: " + generatedOTP);
             document.getElementById('otp-section').style.display = 'block';
             document.getElementById('otp-send-btn').style.display = 'none';
         };
 
         window.finishRegistration = async () => {
+            const btn = document.getElementById('finish-btn');
             const entered = document.getElementById('login-otp').value;
+            const username = document.getElementById('reg-username').value.toLowerCase().trim();
+
             if(entered !== generatedOTP) return alert("Wrong OTP!");
+            if(!username) return alert("Username is required!");
 
-            const userData = {
-                username: document.getElementById('reg-username').value.toLowerCase(),
-                fullname: document.getElementById('reg-fullname').value,
-                phone: document.getElementById('reg-phone').value,
-                photo: tempPhoto || "https://via.placeholder.com/150"
-            };
+            btn.innerText = "Processing...";
+            btn.disabled = true;
 
-            await setDoc(doc(db, "users", userData.username), userData);
-            localStorage.setItem("anshika_user", JSON.stringify(userData));
-            location.reload();
+            try {
+                const userData = {
+                    username: username,
+                    fullname: document.getElementById('reg-fullname').value || "User",
+                    phone: document.getElementById('reg-phone').value || "N/A",
+                    photo: tempPhoto || "https://via.placeholder.com/150"
+                };
+
+                await setDoc(doc(db, "users", userData.username), userData);
+                localStorage.setItem("anshika_user", JSON.stringify(userData));
+                location.reload();
+            } catch (e) {
+                alert("Error: " + e.message);
+                btn.innerText = "Complete Registration";
+                btn.disabled = false;
+            }
         };
 
-        // Profile Updates
         window.updateName = async () => {
             const newName = document.getElementById('edit-name').value;
             if(!newName) return;
@@ -202,7 +231,7 @@
                 const reader = new FileReader();
                 reader.onload = async (e) => {
                     let localData = JSON.parse(localStorage.getItem("anshika_user"));
-                    localData.photo = e.target.result;
+                    localData.photo = await compressImage(e.target.result);
                     await setDoc(doc(db, "users", localData.username), localData);
                     localStorage.setItem("anshika_user", JSON.stringify(localData));
                     location.reload();
@@ -211,7 +240,6 @@
             }
         };
 
-        // Tab Navigation
         window.nav = (id) => {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -221,7 +249,6 @@
 
         window.logout = () => { localStorage.removeItem("anshika_user"); location.reload(); };
 
-        // Auto Login
         const saved = localStorage.getItem("anshika_user");
         if(saved) {
             const data = JSON.parse(saved);
