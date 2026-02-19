@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jyoti art gallery</title>
+    <title>Colour Artist Anshika App</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -13,16 +13,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg); padding-bottom: 80px; overflow-x: hidden; color: var(--text); }
 
-        /* Login Page */
         #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .logo-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); padding: 5px; object-fit: cover; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3); }
-        .input-box { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; text-align: center; font-size: 1rem; outline: none; }
-        .btn-main { width: 80%; padding: 12px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 15px; }
+        .input-box { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; text-align: center; font-size: 1rem; }
+        .btn-main { width: 80%; padding: 12px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-main:active { transform: scale(0.95); }
 
-        /* Header */
         header { background: var(--white); padding: 10px 15px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .header-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); margin-right: 10px; object-fit: cover; }
+        .header-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); margin-right: 10px; }
         .app-title h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.4rem; line-height: 1; }
         .app-title p { font-size: 0.65rem; color: #777; font-weight: bold; }
 
@@ -30,12 +28,10 @@
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Feed */
         .feed-card { background: var(--white); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; }
         .feed-header { padding: 10px; display: flex; align-items: center; justify-content: space-between; }
         .user-info { display: flex; align-items: center; }
-        .user-avatar { width: 35px; height: 35px; background: #eee; border-radius: 50%; margin-right: 10px; display:flex; align-items:center; justify-content:center; color:#888; overflow:hidden; }
-        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-avatar { width: 35px; height: 35px; background: #eee; border-radius: 50%; margin-right: 10px; display:flex; align-items:center; justify-content:center; color:#888; }
         .follow-btn { border: 1px solid var(--secondary); color: var(--secondary); background: white; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; }
         .follow-btn.following { background: var(--secondary); color: white; }
         .feed-img-container { width: 100%; height: 300px; background: #f0f0f0; position: relative; cursor: pointer; }
@@ -43,92 +39,65 @@
         .multi-icon { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 5px; border-radius: 50%; font-size: 0.8rem; }
         .feed-actions { padding: 10px; display: flex; align-items: center; }
         .action-btn { font-size: 1.5rem; margin-right: 20px; cursor: pointer; color: #333; transition: transform 0.2s; }
+        .action-btn:active { transform: scale(1.2); }
         .action-btn.liked { color: red; }
         .likes-count { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; padding: 0 10px; }
         .caption { padding: 0 10px 15px 10px; font-size: 0.9rem; color: #555; }
 
-        /* Navigation */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: var(--white); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 2000; }
-        .nav-item { text-align: center; color: #999; font-size: 0.7rem; flex: 1; cursor: pointer; }
-        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
-        .nav-item.active { color: var(--primary); }
-        .nav-fab { background: var(--secondary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; position: relative; top: -15px; box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4); }
-
-        /* Upload & Other Elements */
-        .upload-area { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 15px; background: white; margin-bottom: 20px; }
-        .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
-        .preview-img { width: 100%; height: 80px; object-fit: cover; border-radius: 5px; }
-        .menu-list { background: white; border-radius: 15px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .menu-item { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; color: #333; text-decoration: none; }
-        .profile-header { text-align: center; padding: 20px; background: white; margin-bottom: 15px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: relative; }
-        
-        /* Chat */
-        .chat-container { height: 70vh; display: flex; flex-direction: column; background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .chat-box { flex: 1; overflow-y: auto; padding: 15px; background: #f9f9f9; }
-        .chat-message { margin-bottom: 15px; }
-        .chat-sender { font-size: 0.75rem; color: #777; font-weight: bold; margin-bottom: 3px; }
-        .chat-bubble { display: inline-block; background: #e0e0e0; padding: 10px 15px; border-radius: 15px; max-width: 80%; font-size: 0.9rem; }
-        .chat-message.me { text-align: right; }
-        .chat-message.me .chat-bubble { background: var(--primary); color: white; }
-        .chat-input-area { display: flex; padding: 10px; background: white; border-top: 1px solid #eee; }
-        .chat-input-area input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; outline: none; }
-        .chat-send-btn { background: var(--secondary); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; margin-left: 10px; cursor: pointer; }
-
-        /* Modals */
-        .full-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2500; display: none; overflow-y: auto; }
+        #view-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2500; display: none; overflow-y: auto; }
         .modal-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 10; }
-        
-        /* Photo View Modal */
         .big-img-container { width: 100%; height: auto; min-height: 300px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .big-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; }
         .thumbnails { display: flex; gap: 10px; padding: 10px; overflow-x: auto; }
         .thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
         .thumb.active { border-color: var(--primary); }
         .buy-btn { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; }
+        
         .comments-section { padding: 15px; background: #fdfdfd; border-top: 5px solid #f0f0f0; margin-bottom: 50px; }
         .comment-list { max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
         .comment-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         .comment-user { font-weight: bold; font-size: 0.8rem; color: var(--secondary); margin-right: 5px; }
+        .comment-date { font-size: 0.6rem; color: #aaa; float: right; }
         .comment-input-box { display: flex; align-items: center; margin-top: 10px; border: 1px solid #ddd; border-radius: 25px; padding: 5px 10px; background: white; }
         .comment-input-box input { flex: 1; border: none; outline: none; padding: 8px; font-size: 0.9rem; }
         .post-btn { color: var(--primary); font-weight: bold; cursor: pointer; padding: 5px 10px; background: none; border: none; }
 
-        /* News Section */
-        .news-item { background: #fff; padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 10px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); border-radius: 10px; }
-        .news-date { font-size: 0.7rem; color: #999; margin-bottom: 5px; display: block; }
-        .news-title { font-weight: bold; color: var(--secondary); margin-bottom: 5px; font-size: 1.1rem; }
-        .news-desc { font-size: 0.9rem; color: #555; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: var(--white); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 2000; }
+        .nav-item { text-align: center; color: #999; font-size: 0.7rem; flex: 1; cursor: pointer; }
+        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: var(--primary); }
+        .nav-fab { background: var(--secondary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; position: relative; top: -15px; box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4); }
+
+        .upload-area { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 15px; background: white; margin-bottom: 20px; }
+        .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
+        .preview-img { width: 100%; height: 80px; object-fit: cover; border-radius: 5px; }
+        .menu-list { background: white; border-radius: 15px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .menu-item { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; color: #333; text-decoration: none; }
+        .profile-header { text-align: center; padding: 20px; background: white; margin-bottom: 15px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
     <div id="login-page">
-        <img src="https://i.ibb.co/3mVC1DF1/image.png" class="logo-circle">
+        <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/150/ff4081/ffffff?text=Logo'" class="logo-circle">
         <h2 style="font-family: 'Dancing Script'; margin-bottom: 5px;">Artist Ms Jyoti</h2>
-        <p style="color:#777; margin-bottom: 20px;">Online Gallery</p>
-        
-        <div style="width: 100%; text-align: center;">
-            <input type="text" id="authName" class="input-box" placeholder="Your Full Name">
-            <input type="text" id="authUsername" class="input-box" placeholder="Create / Enter Username">
-            
-            <p style="font-size: 0.8rem; color: #777; margin-top: 15px; margin-bottom: 5px;">Profile Photo (Optional)</p>
-            <input type="file" id="authPic" class="input-box" accept="image/*" style="padding: 8px;">
-
-            <button class="btn-main" onclick="window.handleAuth()">Create Account / Login</button>
-            <p style="font-size: 0.7rem; color: #999; margin-top: 15px;">Enter username to login. If it doesn't exist, a new account will be created.</p>
+        <p style="color:#777; margin-bottom: 30px;">Online Gallery</p>
+        <input type="tel" id="phoneInput" class="input-box" placeholder="Mobile Number">
+        <button class="btn-main" onclick="window.sendOTP()" id="otpBtn">Get Code</button>
+        <div id="otp-area" style="display: none; text-align: center; width: 100%;">
+            <p id="otp-hint" style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 10px;"></p>
+            <input type="text" id="otpInput" class="input-box" placeholder="Enter Customer No.">
+            <button class="btn-main" style="background: var(--secondary);" onclick="window.verifyOTP()">Login</button>
         </div>
     </div>
 
     <div id="app-screen" style="display: none;">
         <header>
             <div style="display:flex; align-items:center;">
-                <img id="header-user-pic" src="https://i.ibb.co/3mVC1DF1/image.png" class="header-logo">
-                <div class="app-title"><h1>Colour Artist</h1><p>JYOTI ART GALLERY</p></div>
+                <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/50'" class="header-logo">
+                <div class="app-title"><h1>Colour Artist</h1><p>ANSHIKA ART GALLERY</p></div>
             </div>
-            <div style="display:flex; gap: 15px; align-items:center;">
-                <i class="fa-regular fa-bell" style="font-size: 1.3rem; cursor:pointer;" onclick="window.openNewsModal()"></i>
-                <i class="fa-solid fa-bars" style="font-size: 1.3rem; cursor:pointer;" onclick="window.nav('menu')"></i>
-            </div>
+            <i class="fa-regular fa-bell" style="font-size: 1.2rem;"></i>
         </header>
 
         <section id="home" class="section active">
@@ -151,33 +120,16 @@
             </div>
             <input type="text" id="artTitle" class="input-box" style="width:100%; text-align:left;" placeholder="Art Title">
             <textarea id="artDesc" rows="3" placeholder="Description..." style="width:100%; border:1px solid #ddd; padding:10px; border-radius:10px; margin-bottom:10px;"></textarea>
-            <button class="btn-main" onclick="window.saveArt()" id="saveBtn" style="width:100%;">Post Art</button>
-        </section>
-
-        <section id="chat" class="section">
-            <h3 style="margin-bottom:15px; color: var(--secondary);"><i class="fa-solid fa-comments"></i> Community Chat</h3>
-            <div class="chat-container">
-                <div class="chat-box" id="chatBox"><p style="text-align:center; color:#999; font-size:0.8rem;">Loading messages...</p></div>
-                <div class="chat-input-area">
-                    <input type="text" id="chatMsgInput" placeholder="Type a message...">
-                    <button class="chat-send-btn" onclick="window.sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>
+            <button class="btn-main" onclick="window.saveArt()" id="saveBtn">Post Art</button>
         </section>
 
         <section id="profile" class="section">
             <div class="profile-header">
-                <div id="profile-pic-display" style="width:90px; height:90px; border-radius:50%; background:var(--secondary); color:white; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin:0 auto 10px; overflow:hidden; border: 3px solid var(--primary);">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <h2 id="profile-name" style="margin-bottom: 2px;">Name</h2>
-                <p id="profile-id" style="color: #777; font-size: 0.9rem; margin-bottom: 10px;">@username</p>
-                
-                <button onclick="window.openEditProfile()" style="background: white; border: 1px solid #ddd; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; color: var(--primary); font-weight: bold;"><i class="fa-solid fa-pen"></i> Edit Profile</button>
-
-                <div style="display:flex; justify-content:center; gap:30px; margin:15px 0 0 0;">
-                    <div style="text-align:center;"><span class="stat-num" id="stat-followers">0</span><br><span style="font-size:0.8rem; color:#777;">Followers</span></div>
-                    <div style="text-align:center;"><span class="stat-num" id="stat-following">0</span><br><span style="font-size:0.8rem; color:#777;">Following</span></div>
+                <div style="width:80px; height:80px; border-radius:50%; background:var(--secondary); color:white; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 10px;"><i class="fa-solid fa-user"></i></div>
+                <h2 id="profile-id">ACS-USER</h2>
+                <div style="display:flex; justify-content:center; gap:30px; margin:15px 0;">
+                    <div style="text-align:center;"><span class="stat-num" id="stat-followers">0</span><span>Followers</span></div>
+                    <div style="text-align:center;"><span class="stat-num" id="stat-following">0</span><span>Following</span></div>
                 </div>
             </div>
             <h3 style="margin: 0 0 10px 15px;">My Posts</h3>
@@ -192,16 +144,11 @@
                 <a href="#" class="menu-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Mandala Art</a>
                 <a href="#" class="menu-item"><i class="fa-solid fa-brush"></i> Wall Painting Service</a>
             </div>
-            
             <h3 style="margin:20px 0 15px;">Contact</h3>
             <div class="menu-list">
-                <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-item"><i class="fa-brands fa-youtube" style="color:red; margin-right: 10px;"></i> YouTube</a>
-                <a href="https://wa.me/918252900810" target="_blank" class="menu-item"><i class="fa-brands fa-whatsapp" style="color:green; margin-right: 10px;"></i> WhatsApp</a>
-            </div>
-
-            <h3 style="margin:20px 0 15px;">Settings</h3>
-            <div class="menu-list">
-                <div class="menu-item" onclick="window.logout()" style="color:red; cursor:pointer;"><i class="fa-solid fa-right-from-bracket" style="margin-right: 10px;"></i> Logout Account</div>
+                <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-item"><i class="fa-brands fa-youtube" style="color:red;"></i> YouTube</a>
+                <a href="https://wa.me/918252900810" target="_blank" class="menu-item"><i class="fa-brands fa-whatsapp" style="color:green;"></i> WhatsApp</a>
+                <div class="menu-item" onclick="window.logout()" style="color:red; cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
             </div>
         </section>
 
@@ -209,12 +156,12 @@
             <div class="nav-item active" onclick="window.nav('home')"><i class="fa-solid fa-house"></i>Home</div>
             <div class="nav-item" onclick="window.nav('explore')"><i class="fa-solid fa-compass"></i>Explore</div>
             <div class="nav-fab" onclick="window.nav('add')"><i class="fa-solid fa-plus"></i></div>
-            <div class="nav-item" onclick="window.nav('chat')"><i class="fa-solid fa-comments"></i>Chat</div>
             <div class="nav-item" onclick="window.nav('profile')"><i class="fa-solid fa-user"></i>Profile</div>
+            <div class="nav-item" onclick="window.nav('menu')"><i class="fa-solid fa-bars"></i>Menu</div>
         </nav>
     </div>
 
-    <div id="view-modal" class="full-modal">
+    <div id="view-modal">
         <div class="modal-header">
             <h3 id="view-title">Art</h3>
             <i class="fa-solid fa-xmark" style="font-size:1.5rem; cursor:pointer;" onclick="window.closeModal()"></i>
@@ -227,12 +174,14 @@
                     <i class="fa-regular fa-heart action-btn" id="modal-like-btn"></i>
                     <i class="fa-regular fa-share-from-square action-btn" id="modal-share-btn"></i>
                 </div>
-                <button class="buy-btn" onclick="window.buyArt()"><i class="fa-brands fa-whatsapp" style="margin-right: 5px;"></i> Buy/Order</button>
+                <button class="buy-btn" onclick="window.buyArt()"><i class="fa-brands fa-whatsapp"></i> Buy/Order</button>
+                <i class="fa-solid fa-trash" style="color:#ddd; cursor:pointer; margin-left:10px;" onclick="window.secretDeleteCurrent()"></i>
             </div>
             <p id="view-likes" style="font-weight:bold; margin-bottom:5px;">0 Likes</p>
             <p id="view-desc" style="color:#555;"></p>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                <span id="view-owner" style="font-weight:bold; font-size:0.9rem; color: var(--secondary);">@Artist</span>
+                <span id="view-owner" style="font-weight:bold; font-size:0.9rem;">Artist</span>
+                <button class="follow-btn" id="modal-follow-btn">Follow</button>
             </div>
         </div>
         <div class="comments-section">
@@ -245,54 +194,11 @@
         </div>
     </div>
 
-    <div id="news-modal" class="full-modal">
-        <div class="modal-header">
-            <h3><i class="fa-regular fa-bell" style="color:var(--primary);"></i> Latest News</h3>
-            <div>
-                <i class="fa-solid fa-plus" style="font-size:1.3rem; cursor:pointer; color:var(--secondary); margin-right: 15px;" onclick="window.adminAddNewsPrompt()"></i>
-                <i class="fa-solid fa-xmark" style="font-size:1.5rem; cursor:pointer;" onclick="document.getElementById('news-modal').style.display='none'"></i>
-            </div>
-        </div>
-        
-        <div id="admin-news-form" style="display:none; padding: 15px; background: #f0f0f0; border-bottom: 2px solid #ddd;">
-            <h4 style="margin-bottom: 10px; color:red;">Admin Panel</h4>
-            <input type="text" id="newsTitle" class="input-box" style="width:100%;" placeholder="News Title">
-            <textarea id="newsDesc" rows="3" class="input-box" style="width:100%; border-radius:10px; text-align:left;" placeholder="News Details..."></textarea>
-            <button class="btn-main" style="width:100%; margin-top:5px;" onclick="window.postAdminNews()">Post News</button>
-        </div>
-
-        <div id="news-list" style="padding: 15px;">
-            <p style="text-align:center; color:#999;">Loading News...</p>
-        </div>
-    </div>
-
-    <div id="edit-profile-modal" class="full-modal">
-        <div class="modal-header">
-            <h3>Edit Profile</h3>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem; cursor:pointer;" onclick="document.getElementById('edit-profile-modal').style.display='none'"></i>
-        </div>
-        <div style="padding: 20px; text-align: center;">
-            <div id="edit-pic-preview" style="width:100px; height:100px; border-radius:50%; background:#eee; margin:0 auto 15px; overflow:hidden; border: 3px solid var(--primary);">
-                <img src="" id="edit-img-tag" style="width:100%; height:100%; object-fit:cover; display:none;">
-            </div>
-            
-            <p style="font-size: 0.8rem; color: #777; text-align: left; margin-left: 10%;">Change Photo</p>
-            <input type="file" id="editPicInput" class="input-box" accept="image/*" style="padding: 8px;">
-
-            <p style="font-size: 0.8rem; color: #777; text-align: left; margin-left: 10%; margin-top: 10px;">Full Name</p>
-            <input type="text" id="editName" class="input-box">
-
-            <p style="font-size: 0.8rem; color: #777; text-align: left; margin-left: 10%; margin-top: 10px;">Username</p>
-            <input type="text" id="editUsername" class="input-box">
-
-            <button class="btn-main" onclick="window.saveProfileEdit()" id="saveProfileBtn">Save Changes</button>
-        </div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, setDoc, getDoc, arrayUnion, arrayRemove, onSnapshot, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, arrayUnion, arrayRemove, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // YOUR CONFIG IS NOW ADDED HERE
         const firebaseConfig = {
           apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
           authDomain: "anshika-art-app-c3098.firebaseapp.com",
@@ -303,96 +209,71 @@
           measurementId: "G-Q1BJT7T3ZJ"
         };
 
+        // Initialize Firebase
         let app, db;
         try {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
-        } catch (e) { console.error("Firebase Error", e); }
+            console.log("Firebase Connected");
+        } catch (e) {
+            console.error("Firebase Error", e);
+            alert("Firebase Error!");
+        }
 
-        const USER_KEY = "anshika_user_session";
+        const USER_KEY = "anshika_online_session";
+        const DELETE_PASS = "24361";
         let currentUser = JSON.parse(localStorage.getItem(USER_KEY)) || null;
         let arts = [];
         let currentModalArtID = null;
+        let sessionOTP = "";
 
-        // Expose functions to window
-        window.handleAuth = handleAuth;
+        // --- EXPOSE FUNCTIONS ---
+        window.sendOTP = sendOTP;
+        window.verifyOTP = verifyOTP;
         window.logout = logout;
         window.nav = nav;
         window.handleFileSelect = handleFileSelect;
         window.saveArt = saveArt;
-        window.sendChatMessage = sendChatMessage;
-        window.toggleFollow = toggleFollow;
-        window.toggleLike = toggleLike;
-        window.openEditProfile = openEditProfile;
-        window.saveProfileEdit = saveProfileEdit;
-        window.openNewsModal = openNewsModal;
-        window.adminAddNewsPrompt = adminAddNewsPrompt;
-        window.postAdminNews = postAdminNews;
-        
-        // Modal functions
-        window.openModal = openModal;
         window.closeModal = closeModal;
-        window.changeMainImg = changeMainImg;
-        window.postComment = postComment;
-        window.shareArt = shareArt;
         window.buyArt = buyArt;
+        window.secretDeleteCurrent = secretDeleteCurrent;
+        window.postComment = postComment;
+        window.openModal = openModal;
+        window.toggleLike = toggleLike;
+        window.toggleFollow = toggleFollow;
+        window.shareArt = shareArt;
+        window.changeMainImg = changeMainImg;
 
-        if(currentUser) { showApp(); } 
-        else { document.getElementById('login-page').style.display = 'flex'; }
-
-        async function handleAuth() {
-            const name = document.getElementById('authName').value.trim();
-            const username = document.getElementById('authUsername').value.trim().toLowerCase();
-            const picInput = document.getElementById('authPic');
-
-            if(!username) return alert("Username is compulsory!");
-
-            document.querySelector('#login-page .btn-main').innerText = "Please wait...";
-
-            const userRef = doc(db, "users", username);
-            const userSnap = await getDoc(userRef);
-
-            let profilePicUrl = "";
-            if(picInput.files.length > 0) {
-                profilePicUrl = await compressImage(picInput.files[0]);
-            }
-
-            if(userSnap.exists()) {
-                currentUser = userSnap.data();
-                if(!currentUser.following) currentUser.following = []; // Bug fix for old accounts
-                
-                let updated = false;
-                if(profilePicUrl && profilePicUrl !== currentUser.profilePic) { currentUser.profilePic = profilePicUrl; updated = true; }
-                if(name && name !== currentUser.name) { currentUser.name = name; updated = true; }
-                
-                if(updated) { await updateDoc(userRef, currentUser); await updateAllUserPosts(username, currentUser.profilePic); }
-            } else {
-                if(!name) { 
-                    alert("Please enter Full Name to create a new account."); 
-                    document.querySelector('#login-page .btn-main').innerText = "Create Account / Login";
-                    return; 
-                }
-                currentUser = {
-                    id: username,
-                    name: name,
-                    profilePic: profilePicUrl,
-                    following: [] 
-                };
-                await setDoc(userRef, currentUser);
-            }
-
-            localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-            document.querySelector('#login-page .btn-main').innerText = "Create Account / Login";
-            showApp();
+        // --- INIT ---
+        if(currentUser) { 
+            showApp(); 
+        } else {
+            document.getElementById('login-page').style.display = 'flex';
         }
 
-        function showApp() {
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('app-screen').style.display = 'block';
-            if(!currentUser.following) currentUser.following = []; // Safety check
-            updateProfileUI();
-            listenToArts();
-            listenToChat();
+        // --- AUTH ---
+        function sendOTP() {
+            if(!document.getElementById('phoneInput').value) return alert("Enter Mobile");
+            const customerNo = Math.floor(Math.random() * 100) + 1;
+            sessionOTP = customerNo.toString();
+            alert("You are Customer No: " + customerNo + "\nYour OTP is: " + customerNo);
+            document.getElementById('otp-hint').innerText = "Enter OTP: " + customerNo;
+            document.getElementById('otpBtn').style.display = 'none';
+            document.getElementById('otp-area').style.display = 'block';
+        }
+
+        function verifyOTP() {
+            if(document.getElementById('otpInput').value === sessionOTP) {
+                currentUser = {
+                    id: "ACS-USER-" + Math.floor(1000 + Math.random() * 9000),
+                    phone: document.getElementById('phoneInput').value,
+                    following: [] 
+                };
+                localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+                showApp();
+            } else {
+                alert("Wrong OTP!");
+            }
         }
 
         function logout() {
@@ -400,192 +281,26 @@
             location.reload();
         }
 
-        // --- EDIT PROFILE ---
-        function openEditProfile() {
-            document.getElementById('edit-profile-modal').style.display = 'block';
-            document.getElementById('editName').value = currentUser.name || "";
-            document.getElementById('editUsername').value = currentUser.id || "";
-            
-            const imgTag = document.getElementById('edit-img-tag');
-            if(currentUser.profilePic) {
-                imgTag.src = currentUser.profilePic;
-                imgTag.style.display = 'block';
-            }
-        }
-
-        async function saveProfileEdit() {
-            const btn = document.getElementById('saveProfileBtn');
-            btn.innerText = "Saving...";
-            btn.disabled = true;
-
-            const newName = document.getElementById('editName').value.trim();
-            const newUsername = document.getElementById('editUsername').value.trim().toLowerCase();
-            const picInput = document.getElementById('editPicInput');
-            
-            if(!newUsername || !newName) { alert("Name and Username cannot be empty."); btn.innerText = "Save Changes"; btn.disabled = false; return; }
-
-            let newPicUrl = currentUser.profilePic;
-            if(picInput.files.length > 0) {
-                newPicUrl = await compressImage(picInput.files[0]);
-            }
-
-            if(newUsername !== currentUser.id) {
-                const newRef = doc(db, "users", newUsername);
-                const checkSnap = await getDoc(newRef);
-                if(checkSnap.exists()) {
-                    alert("This Username is already taken!");
-                    btn.innerText = "Save Changes"; btn.disabled = false;
-                    return;
-                }
-
-                const updatedUser = { ...currentUser, id: newUsername, name: newName, profilePic: newPicUrl };
-                await setDoc(newRef, updatedUser);
-                await deleteDoc(doc(db, "users", currentUser.id));
-                await updateAllUserPosts(currentUser.id, newPicUrl, newUsername);
-                currentUser = updatedUser;
-            } else {
-                currentUser.name = newName;
-                currentUser.profilePic = newPicUrl;
-                await updateDoc(doc(db, "users", currentUser.id), currentUser);
-                await updateAllUserPosts(currentUser.id, newPicUrl, currentUser.id);
-            }
-
-            localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
+        function showApp() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('app-screen').style.display = 'block';
             updateProfileUI();
-            document.getElementById('edit-profile-modal').style.display = 'none';
-            btn.innerText = "Save Changes"; btn.disabled = false;
+            listenToArts();
         }
 
-        async function updateAllUserPosts(oldId, newPic, newId = oldId) {
-            const artsQ = query(collection(db, "arts"), where("ownerID", "==", oldId));
-            const artsSnap = await getDocs(artsQ);
-            artsSnap.forEach(async (d) => {
-                await updateDoc(doc(db, "arts", d.id), { ownerID: newId, ownerPic: newPic });
-            });
-        }
-
-        // --- NEWS MODAL ---
-        function openNewsModal() {
-            document.getElementById('news-modal').style.display = 'block';
-            listenToNews();
-        }
-
-        function adminAddNewsPrompt() {
-            const pass = prompt("Enter Admin Password:");
-            if(pass === "24361") {
-                document.getElementById('admin-news-form').style.display = 'block';
-            } else if(pass) {
-                alert("Incorrect Password!");
-            }
-        }
-
-        async function postAdminNews() {
-            const title = document.getElementById('newsTitle').value;
-            const desc = document.getElementById('newsDesc').value;
-            if(!title || !desc) return alert("Fill all fields");
-
-            await addDoc(collection(db, "news"), {
-                title: title,
-                desc: desc,
-                date: Date.now()
-            });
-
-            document.getElementById('newsTitle').value = "";
-            document.getElementById('newsDesc').value = "";
-            document.getElementById('admin-news-form').style.display = 'none';
-            alert("News Posted Successfully!");
-        }
-
-        function listenToNews() {
-            const q = query(collection(db, "news"), orderBy("date", "desc"));
-            onSnapshot(q, (snapshot) => {
-                const list = document.getElementById('news-list');
-                list.innerHTML = "";
-                if(snapshot.empty) { list.innerHTML = "<p style='text-align:center; color:#999;'>No recent news.</p>"; return; }
-                
-                snapshot.docs.forEach(doc => {
-                    const data = doc.data();
-                    const dateStr = new Date(data.date).toLocaleString();
-                    list.innerHTML += `
-                        <div class="news-item">
-                            <span class="news-date">${dateStr}</span>
-                            <div class="news-title">${data.title}</div>
-                            <div class="news-desc">${data.desc}</div>
-                        </div>
-                    `;
-                });
-            });
-        }
-
-        function compressImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const maxWidth = 500; 
-                        const scale = maxWidth / img.width;
-                        canvas.width = maxWidth;
-                        canvas.height = img.height * scale;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.6));
-                    };
-                };
-            });
-        }
-
-        // --- FIRESTORE LISTENERS ---
+        // --- FIRESTORE LISTENER ---
         function listenToArts() {
-            try {
-                const q = query(collection(db, "arts"), orderBy("date", "desc"));
-                onSnapshot(q, (snapshot) => {
-                    arts = [];
-                    snapshot.docs.forEach(doc => { arts.push({ id: doc.id, ...doc.data() }); });
-                    renderFeeds();
-                });
-            } catch (e) {
-                console.log("Error loading arts: ", e);
-                document.getElementById('home-feed').innerHTML = "<p style='text-align:center;'>Error loading data.</p>";
-            }
-        }
-
-        function listenToChat() {
-            const q = query(collection(db, "chats"), orderBy("timestamp", "asc"));
+            const q = query(collection(db, "arts"), orderBy("date", "desc"));
             onSnapshot(q, (snapshot) => {
-                const chatBox = document.getElementById('chatBox');
-                chatBox.innerHTML = "";
+                arts = [];
                 snapshot.docs.forEach(doc => {
-                    const data = doc.data();
-                    const isMe = data.sender === currentUser.id;
-                    chatBox.innerHTML += `
-                        <div class="chat-message ${isMe ? 'me' : ''}">
-                            ${!isMe ? `<div class="chat-sender">${data.sender}</div>` : ''}
-                            <div class="chat-bubble">${data.text}</div>
-                        </div>
-                    `;
+                    arts.push({ id: doc.id, ...doc.data() });
                 });
-                chatBox.scrollTop = chatBox.scrollHeight;
+                renderFeeds();
             });
         }
 
-        async function sendChatMessage() {
-            const input = document.getElementById('chatMsgInput');
-            const text = input.value.trim();
-            if(!text) return;
-            
-            await addDoc(collection(db, "chats"), {
-                sender: currentUser.id,
-                text: text,
-                timestamp: Date.now()
-            });
-            input.value = "";
-        }
-
-        // --- UPLOAD ARTS ---
+        // --- UPLOAD ---
         let selectedFiles = [];
         function handleFileSelect() {
             const input = document.getElementById('fileInput');
@@ -610,12 +325,12 @@
 
             try {
                 const images = await Promise.all(selectedFiles.map(file => compressImage(file)));
+                
                 await addDoc(collection(db, "arts"), {
                     images: images,
                     title: document.getElementById('artTitle').value || "Untitled",
                     desc: document.getElementById('artDesc').value,
                     ownerID: currentUser.id,
-                    ownerPic: currentUser.profilePic || "",
                     likes: [],
                     comments: [],
                     date: Date.now()
@@ -628,19 +343,44 @@
                 document.getElementById('previewGrid').innerHTML = "";
                 selectedFiles = [];
                 nav('home');
-            } catch (e) { alert("Upload Failed!"); }
-            
+
+            } catch (e) {
+                console.error(e);
+                alert("Upload Failed! Check Internet or Database Rules.");
+            }
             document.getElementById('saveBtn').innerText = "Post Art";
             document.getElementById('saveBtn').disabled = false;
         }
 
-        // --- RENDERING & UI ---
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxWidth = 400; 
+                        const scale = maxWidth / img.width;
+                        canvas.width = maxWidth;
+                        canvas.height = img.height * scale;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.5));
+                    };
+                };
+            });
+        }
+
+        // --- RENDERING ---
         function renderFeeds() {
             const sortedByLikes = [...arts].sort((a, b) => (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0));
             renderList('home-feed', sortedByLikes);
             renderList('explore-feed', arts);
             const myArts = arts.filter(a => a.ownerID === currentUser.id);
             renderList('my-posts', myArts);
+            updateProfileUI();
         }
 
         function renderList(containerId, data) {
@@ -648,15 +388,12 @@
             container.innerHTML = "";
             if(data.length === 0) { container.innerHTML = "<p style='text-align:center; padding:20px; color:#999;'>No arts found.</p>"; return; }
             
-            // Safety check for following array
-            const followingArr = currentUser.following || [];
-
             data.forEach(art => {
                 const isLiked = art.likes && art.likes.includes(currentUser.id);
-                const isFollowing = followingArr.includes(art.ownerID);
-                const multiIcon = art.images && art.images.length > 1 ? '<div class="multi-icon"><i class="fa-solid fa-layer-group"></i></div>' : '';
-                const userAvatarHtml = art.ownerPic ? `<img src="${art.ownerPic}">` : `<i class="fa-solid fa-user"></i>`;
-                const artImage = art.images && art.images[0] ? art.images[0] : '';
+                const likeCount = art.likes ? art.likes.length : 0;
+                const isFollowing = currentUser.following.includes(art.ownerID);
+                const multiIcon = art.images.length > 1 ? '<div class="multi-icon"><i class="fa-solid fa-layer-group"></i></div>' : '';
+                
                 const safeTitle = (art.title || "").replace(/'/g, "\\'");
                 const safeDesc = (art.desc || "").replace(/'/g, "\\'");
 
@@ -664,100 +401,27 @@
                 <div class="feed-card">
                     <div class="feed-header">
                         <div class="user-info">
-                            <div class="user-avatar">${userAvatarHtml}</div>
-                            <span style="font-weight:600; font-size:0.9rem;">@${art.ownerID || 'Unknown'}</span>
+                            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                            <span style="font-weight:600; font-size:0.9rem;">${art.ownerID}</span>
                         </div>
                         <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="window.toggleFollow('${art.ownerID}')">${isFollowing ? 'Following' : 'Follow'}</button>
                     </div>
                     <div class="feed-img-container" onclick="window.openModal('${art.id}')">
-                        <img src="${artImage}" class="feed-img">
+                        <img src="${art.images[0]}" class="feed-img">
                         ${multiIcon}
                     </div>
                     <div class="feed-actions">
                         <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike('${art.id}')"></i>
-                        <i class="fa-regular fa-comment action-btn" onclick="window.openModal('${art.id}')"></i>
                         <i class="fa-regular fa-share-from-square action-btn" onclick="window.shareArt('${safeTitle}', '${safeDesc}')"></i>
+                        <i class="fa-regular fa-comment action-btn" onclick="window.openModal('${art.id}')"></i>
                     </div>
-                    <div class="likes-count">${art.likes ? art.likes.length : 0} Likes</div>
-                    <div class="caption"><strong>${art.title || ''}</strong></div>
+                    <div class="likes-count">${likeCount} Likes</div>
+                    <div class="caption"><strong>${art.title}</strong></div>
                 </div>`;
             });
         }
 
-        // --- ART MODAL FUNCTIONS ---
-        function openModal(id) {
-            const art = arts.find(a => a.id === id);
-            if(!art) return;
-            currentModalArtID = id;
-
-            document.getElementById('view-modal').style.display = 'block';
-            document.getElementById('view-title').innerText = art.title || "Art";
-            document.getElementById('view-desc').innerText = art.desc || "";
-            document.getElementById('view-owner').innerText = "@" + art.ownerID;
-            document.getElementById('main-view-img').src = art.images[0];
-
-            const thumbs = document.getElementById('view-thumbnails');
-            thumbs.innerHTML = "";
-            if(art.images) {
-                art.images.forEach((src, idx) => {
-                    thumbs.innerHTML += `<img src="${src}" class="thumb ${idx===0?'active':''}" onclick="window.changeMainImg('${src}', this)">`;
-                });
-            }
-
-            renderComments(art);
-            
-            const isLiked = art.likes && art.likes.includes(currentUser.id);
-            const likeBtn = document.getElementById('modal-like-btn');
-            likeBtn.className = `${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}`;
-            document.getElementById('view-likes').innerText = (art.likes ? art.likes.length : 0) + " Likes";
-
-            likeBtn.onclick = () => { toggleLike(id); setTimeout(() => openModal(id), 500); };
-            document.getElementById('modal-share-btn').onclick = () => shareArt(art.title, art.desc);
-        }
-
-        function changeMainImg(src, thumb) {
-            document.getElementById('main-view-img').src = src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-        }
-
-        function renderComments(art) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = "";
-            if(!art.comments || art.comments.length === 0) { list.innerHTML = "<p style='color:#ccc; font-size:0.8rem; text-align:center;'>No reviews yet.</p>"; return; }
-            art.comments.forEach(c => {
-                list.innerHTML += `<div class="comment-item"><span class="comment-user">@${c.user}</span><span>${c.text}</span></div>`;
-            });
-        }
-
-        async function postComment() {
-            const text = document.getElementById('comment-input').value;
-            if(!text || !currentModalArtID) return;
-            const artRef = doc(db, "arts", currentModalArtID);
-            const newComment = { user: currentUser.id, text: text, date: new Date().getTime() };
-            await updateDoc(artRef, { comments: arrayUnion(newComment) });
-            document.getElementById('comment-input').value = "";
-            setTimeout(() => openModal(currentModalArtID), 500);
-        }
-
-        function shareArt(title, desc) {
-            if(navigator.share) { navigator.share({ title: title, text: desc, url: window.location.href }).catch(console.error); } 
-            else { prompt("Copy link:", window.location.href); }
-        }
-
-        function buyArt() {
-            const art = arts.find(a => a.id === currentModalArtID);
-            const phone = "918252900810"; 
-            const text = `Hi, I want to order this art: ${art.title}`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        function closeModal() { 
-            document.getElementById('view-modal').style.display = 'none'; 
-            currentModalArtID = null; 
-        }
-
-        // --- INTERACTION LOGIC ---
+        // --- ACTIONS ---
         async function toggleLike(id) {
             const artRef = doc(db, "arts", id);
             const art = arts.find(a => a.id === id);
@@ -766,45 +430,114 @@
             else { await updateDoc(artRef, { likes: arrayUnion(currentUser.id) }); }
         }
 
-        async function toggleFollow(ownerID) {
+        function toggleFollow(ownerID) {
             if(ownerID === currentUser.id) return alert("Can't follow yourself.");
-            
-            if(!currentUser.following) currentUser.following = [];
             const index = currentUser.following.indexOf(ownerID);
             if(index === -1) currentUser.following.push(ownerID); else currentUser.following.splice(index, 1);
-            
             localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-            await updateDoc(doc(db, "users", currentUser.id), { following: currentUser.following });
             renderFeeds(); updateProfileUI();
         }
 
+        function openModal(id) {
+            const art = arts.find(a => a.id === id);
+            if(!art) return;
+            currentModalArtID = id;
+
+            document.getElementById('view-modal').style.display = 'block';
+            document.getElementById('view-title').innerText = art.title;
+            document.getElementById('view-desc').innerText = art.desc;
+            document.getElementById('view-owner').innerText = art.ownerID;
+            document.getElementById('main-view-img').src = art.images[0];
+
+            const thumbs = document.getElementById('view-thumbnails');
+            thumbs.innerHTML = "";
+            art.images.forEach((src, idx) => {
+                thumbs.innerHTML += `<img src="${src}" class="thumb ${idx===0?'active':''}" onclick="window.changeMainImg('${src}', this)">`;
+            });
+
+            renderComments(art);
+            updateModalLikeUI(art);
+
+            document.getElementById('modal-like-btn').onclick = () => toggleLike(id);
+            document.getElementById('modal-share-btn').onclick = () => shareArt(art.title, art.desc);
+
+            const isFollowing = currentUser.following.includes(art.ownerID);
+            const followBtn = document.getElementById('modal-follow-btn');
+            followBtn.innerText = isFollowing ? "Following" : "Follow";
+            followBtn.onclick = () => { toggleFollow(art.ownerID); openModal(id); };
+        }
+
+        function changeMainImg(src, thumb) {
+            document.getElementById('main-view-img').src = src;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        }
+
+        function updateModalLikeUI(art) {
+            const isLiked = art.likes && art.likes.includes(currentUser.id);
+            const btn = document.getElementById('modal-like-btn');
+            btn.className = `${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}`;
+            document.getElementById('view-likes').innerText = (art.likes ? art.likes.length : 0) + " Likes";
+        }
+
+        async function postComment() {
+            const text = document.getElementById('comment-input').value;
+            if(!text) return;
+            const artRef = doc(db, "arts", currentModalArtID);
+            const newComment = { user: currentUser.id, text: text, date: new Date().toLocaleDateString() };
+            await updateDoc(artRef, { comments: arrayUnion(newComment) });
+            document.getElementById('comment-input').value = "";
+        }
+
+        function renderComments(art) {
+            const list = document.getElementById('comments-list');
+            list.innerHTML = "";
+            if(!art.comments || art.comments.length === 0) { list.innerHTML = "<p style='color:#ccc; font-size:0.8rem; text-align:center;'>No reviews yet.</p>"; return; }
+            art.comments.forEach(c => {
+                list.innerHTML += `<div class="comment-item"><span class="comment-user">${c.user}</span><span>${c.text}</span><div class="comment-date">${c.date}</div></div>`;
+            });
+        }
+
+        async function secretDeleteCurrent() {
+            const pass = prompt("Audit Password:");
+            if(pass === DELETE_PASS) {
+                if(confirm("Permanently delete for EVERYONE?")) {
+                    await deleteDoc(doc(db, "arts", currentModalArtID));
+                    closeModal();
+                    alert("Deleted from Database.");
+                }
+            } else if (pass) alert("Access Denied");
+        }
+
+        function shareArt(title, desc) {
+            if(navigator.share) {
+                navigator.share({ title: title, text: desc, url: window.location.href }).catch(console.error);
+            } else {
+                prompt("Copy link:", window.location.href);
+            }
+        }
+
+        function buyArt() {
+            const art = arts.find(a => a.id === currentModalArtID);
+            const phone = "918252900810"; 
+            const text = `Hi, I want to order: ${art.title}`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function closeModal() { document.getElementById('view-modal').style.display = 'none'; currentModalArtID = null; }
+        
         function nav(tab) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(tab).classList.add('active');
-            
-            if(tab === 'home') document.querySelectorAll('.nav-item')[0].classList.add('active');
-            if(tab === 'explore') document.querySelectorAll('.nav-item')[1].classList.add('active');
-            if(tab === 'chat') document.querySelectorAll('.nav-item')[2].classList.add('active');
-            if(tab === 'profile') document.querySelectorAll('.nav-item')[3].classList.add('active');
+            const navIndex = ['home','explore','add','profile','menu'].indexOf(tab);
+            if(navIndex !== -1 && tab !== 'add') document.querySelectorAll('.nav-item')[navIndex < 2 ? navIndex : navIndex-1].classList.add('active');
         }
 
         function updateProfileUI() {
             if(!currentUser) return;
-            document.getElementById('profile-name').innerText = currentUser.name || "User";
-            document.getElementById('profile-id').innerText = "@" + currentUser.id;
-            document.getElementById('stat-following').innerText = (currentUser.following || []).length;
-            
-            const picDisplay = document.getElementById('profile-pic-display');
-            const headerPic = document.getElementById('header-user-pic');
-
-            if(currentUser.profilePic) {
-                picDisplay.innerHTML = `<img src="${currentUser.profilePic}" style="width:100%; height:100%; object-fit:cover;">`;
-                headerPic.src = currentUser.profilePic;
-            } else {
-                picDisplay.innerHTML = `<i class="fa-solid fa-user"></i>`;
-                headerPic.src = "https://i.ibb.co/3mVC1DF1/image.png";
-            }
+            document.getElementById('profile-id').innerText = currentUser.id;
+            document.getElementById('stat-following').innerText = currentUser.following.length;
         }
     </script>
 </body>
