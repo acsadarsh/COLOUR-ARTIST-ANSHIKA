@@ -3,542 +3,571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colour Artist Anshika App</title>
+    <title>Colour Artist Anshika - Clean v5</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- CSS STYLES --- */
+        /* --- STYLES --- */
         :root { --primary: #ff4081; --secondary: #3f51b5; --bg: #f8f9fa; --white: #ffffff; --text: #333; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg); padding-bottom: 80px; overflow-x: hidden; color: var(--text); }
 
-        #login-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); z-index: 3000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .logo-circle { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); padding: 5px; object-fit: cover; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3); }
-        .input-box { width: 80%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; text-align: center; font-size: 1rem; }
-        .btn-main { width: 80%; padding: 12px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn-main:active { transform: scale(0.95); }
-
-        header { background: var(--white); padding: 10px 15px; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        /* HEADER */
+        header { background: white; padding: 10px 15px; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .app-title h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.5rem; line-height: 1; }
         .header-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--primary); margin-right: 10px; }
-        .app-title h1 { font-family: 'Dancing Script', cursive; color: var(--primary); font-size: 1.4rem; line-height: 1; }
-        .app-title p { font-size: 0.65rem; color: #777; font-weight: bold; }
 
-        .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
+        /* MENU */
+        #menu-overlay { position: fixed; top: 60px; right: 10px; background: white; width: 200px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 2000; }
+        .menu-item { padding: 12px; border-bottom: 1px solid #eee; color: #333; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+
+        /* AUTH */
+        #auth-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 5000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+        .auth-card { width: 100%; max-width: 350px; text-align: center; display: none; }
+        .input-box { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; outline: none; }
+        .btn-main { width: 100%; padding: 10px; border: none; border-radius: 25px; background: var(--primary); color: white; font-weight: bold; cursor: pointer; margin-top: 5px; }
+
+        /* FEED (Clean) */
+        .section { display: none; padding: 10px; padding-bottom: 50px; animation: fadeIn 0.3s; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .feed-card { background: var(--white); border-radius: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; }
-        .feed-header { padding: 10px; display: flex; align-items: center; justify-content: space-between; }
-        .user-info { display: flex; align-items: center; }
-        .user-avatar { width: 35px; height: 35px; background: #eee; border-radius: 50%; margin-right: 10px; display:flex; align-items:center; justify-content:center; color:#888; }
-        .follow-btn { border: 1px solid var(--secondary); color: var(--secondary); background: white; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; }
-        .follow-btn.following { background: var(--secondary); color: white; }
-        .feed-img-container { width: 100%; height: 300px; background: #f0f0f0; position: relative; cursor: pointer; }
-        .feed-img { width: 100%; height: 100%; object-fit: cover; }
-        .multi-icon { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; padding: 5px; border-radius: 50%; font-size: 0.8rem; }
-        .feed-actions { padding: 10px; display: flex; align-items: center; }
-        .action-btn { font-size: 1.5rem; margin-right: 20px; cursor: pointer; color: #333; transition: transform 0.2s; }
-        .action-btn:active { transform: scale(1.2); }
-        .action-btn.liked { color: red; }
-        .likes-count { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; padding: 0 10px; }
-        .caption { padding: 0 10px 15px 10px; font-size: 0.9rem; color: #555; }
+        .feed-card { background: white; border-radius: 15px; margin-bottom: 15px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; position: relative; }
+        .feed-img { width: 100%; height: 350px; object-fit: cover; display: block; }
+        .feed-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 10px; color: white; }
+        .user-chip { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; }
+        .user-chip img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid white; }
 
-        #view-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2500; display: none; overflow-y: auto; }
-        .modal-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 10; }
-        .big-img-container { width: 100%; height: auto; min-height: 300px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .big-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; }
-        .thumbnails { display: flex; gap: 10px; padding: 10px; overflow-x: auto; }
-        .thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
-        .thumb.active { border-color: var(--primary); }
-        .buy-btn { background: #25D366; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; display: flex; align-items: center; }
+        /* PROFILE */
+        .profile-header { background: white; padding: 20px; text-align: center; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .profile-pic-big { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--secondary); object-fit: cover; }
+        .stats-row { display: flex; justify-content: center; gap: 30px; margin: 15px 0; }
+        .stat-box { cursor: pointer; text-align: center; padding: 5px; }
+        .stat-num { font-weight: bold; font-size: 1.2rem; display: block; }
+
+        /* FULL SCREEN MODAL (View Post) */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 4000; display: none; overflow-y: auto; flex-direction: column; }
+        .modal-header { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 10; }
+        .modal-body { padding: 10px; flex: 1; }
+        .modal-img-box { width: 100%; background: black; display: flex; justify-content: center; align-items: center; min-height: 300px; }
+        .modal-img { max-width: 100%; max-height: 60vh; object-fit: contain; }
         
-        .comments-section { padding: 15px; background: #fdfdfd; border-top: 5px solid #f0f0f0; margin-bottom: 50px; }
-        .comment-list { max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
-        .comment-item { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        .comment-user { font-weight: bold; font-size: 0.8rem; color: var(--secondary); margin-right: 5px; }
-        .comment-date { font-size: 0.6rem; color: #aaa; float: right; }
-        .comment-input-box { display: flex; align-items: center; margin-top: 10px; border: 1px solid #ddd; border-radius: 25px; padding: 5px 10px; background: white; }
-        .comment-input-box input { flex: 1; border: none; outline: none; padding: 8px; font-size: 0.9rem; }
-        .post-btn { color: var(--primary); font-weight: bold; cursor: pointer; padding: 5px 10px; background: none; border: none; }
+        .action-row { display: flex; justify-content: space-around; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 1.5rem; color: #555; }
+        .action-btn.liked { color: #ff4081; }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; background: var(--white); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 2000; }
-        .nav-item { text-align: center; color: #999; font-size: 0.7rem; flex: 1; cursor: pointer; }
-        .nav-item i { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+        /* LIST MODAL */
+        .list-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 4500; display: none; justify-content: center; align-items: center; }
+        .list-box { background: white; width: 90%; max-width: 350px; max-height: 70vh; border-radius: 10px; overflow-y: auto; padding: 15px; }
+        .list-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
+
+        /* FOOTER */
+        .powered-by { text-align: center; font-size: 0.7rem; color: #999; margin-top: 20px; width: 100%; }
+        
+        /* NAV */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #eee; z-index: 2000; }
+        .nav-item { text-align: center; color: #aaa; font-size: 0.7rem; flex: 1; }
         .nav-item.active { color: var(--primary); }
-        .nav-fab { background: var(--secondary); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; position: relative; top: -15px; box-shadow: 0 4px 10px rgba(63, 81, 181, 0.4); }
-
-        .upload-area { border: 2px dashed #ddd; padding: 20px; text-align: center; border-radius: 15px; background: white; margin-bottom: 20px; }
-        .preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
-        .preview-img { width: 100%; height: 80px; object-fit: cover; border-radius: 5px; }
-        .menu-list { background: white; border-radius: 15px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .menu-item { padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; color: #333; text-decoration: none; }
-        .profile-header { text-align: center; padding: 20px; background: white; margin-bottom: 15px; border-radius: 0 0 20px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-fab { background: var(--secondary); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; position: relative; top: -15px; border: 4px solid #f8f9fa; }
     </style>
 </head>
 <body>
 
-    <div id="login-page">
-        <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/150/ff4081/ffffff?text=Logo'" class="logo-circle">
-        <h2 style="font-family: 'Dancing Script'; margin-bottom: 5px;">Artist Ms Jyoti</h2>
-        <p style="color:#777; margin-bottom: 30px;">Online Gallery</p>
-        <input type="tel" id="phoneInput" class="input-box" placeholder="Mobile Number">
-        <button class="btn-main" onclick="window.sendOTP()" id="otpBtn">Get Code</button>
-        <div id="otp-area" style="display: none; text-align: center; width: 100%;">
-            <p id="otp-hint" style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 10px;"></p>
-            <input type="text" id="otpInput" class="input-box" placeholder="Enter Customer No.">
-            <button class="btn-main" style="background: var(--secondary);" onclick="window.verifyOTP()">Login</button>
+    <div id="auth-page">
+        <img src="https://i.ibb.co/3mVC1DF1/image.png" style="width:80px; height:80px; border-radius:50%; border:3px solid #ff4081; margin-bottom:15px;">
+        <h2 style="font-family: 'Dancing Script'; color: #ff4081;">Anshika Art Gallery</h2>
+        
+        <div id="auth-select" class="auth-card" style="display:block;">
+            <button class="btn-main" onclick="showAuth('old')">Login</button>
+            <button class="btn-main" style="background:#333;" onclick="showAuth('new')">Signup</button>
+            <button class="btn-main" style="background:gold; color:black;" onclick="showAuth('prem')">Premium 👑</button>
+        </div>
+
+        <div id="auth-new" class="auth-card">
+            <h3>New Account</h3>
+            <input id="n-name" class="input-box" placeholder="Name">
+            <input id="n-user" class="input-box" placeholder="Username">
+            <input id="n-pass" type="password" class="input-box" placeholder="Password (Min 6)">
+            <select id="n-ques" class="input-box"><option>Birth Place?</option><option>Fav Color?</option></select>
+            <input id="n-ans" class="input-box" placeholder="Answer">
+            <p style="font-size:0.8rem; text-align:left;">Profile Pic:</p>
+            <input id="n-pic" type="file" class="input-box">
+            <button class="btn-main" onclick="register()">Create</button>
+            <p onclick="showAuth('home')" style="margin-top:10px; cursor:pointer;">Back</p>
+        </div>
+
+        <div id="auth-old" class="auth-card">
+            <h3>Login</h3>
+            <input id="o-user" class="input-box" placeholder="Username">
+            <input id="o-pass" type="password" class="input-box" placeholder="Password">
+            <button class="btn-main" onclick="login()">Login</button>
+            <p onclick="showAuth('forgot')" style="margin-top:10px; cursor:pointer;">Forgot Password?</p>
+            <p onclick="showAuth('home')" style="margin-top:10px; cursor:pointer;">Back</p>
+        </div>
+
+        <div id="auth-forgot" class="auth-card">
+            <h3>Reset Password</h3>
+            <input id="f-user" class="input-box" placeholder="Username">
+            <input id="f-ans" class="input-box" placeholder="Security Answer">
+            <input id="f-pass" class="input-box" placeholder="New Password">
+            <button class="btn-main" onclick="resetPass()">Reset</button>
+            <p onclick="showAuth('home')" style="margin-top:10px; cursor:pointer;">Back</p>
+        </div>
+
+        <div id="auth-prem" class="auth-card">
+            <h3>Premium</h3>
+            <input id="p-code" type="password" class="input-box" placeholder="Code">
+            <button class="btn-main" style="background:gold; color:black;" onclick="loginPrem()">Enter</button>
+            <p onclick="showAuth('home')" style="margin-top:10px; cursor:pointer;">Back</p>
         </div>
     </div>
 
-    <div id="app-screen" style="display: none;">
+    <div id="app-screen" style="display:none;">
         <header>
             <div style="display:flex; align-items:center;">
-                <img src="https://i.ibb.co/3mVC1DF1/image.png" onerror="this.src='https://via.placeholder.com/50'" class="header-logo">
-                <div class="app-title"><h1>Colour Artist</h1><p>ANSHIKA ART GALLERY</p></div>
+                <img src="https://i.ibb.co/3mVC1DF1/image.png" class="header-logo">
+                <div class="app-title"><h1>Colour Artist</h1><p style="font-size:0.6rem;">Online Gallery</p></div>
             </div>
-            <i class="fa-regular fa-bell" style="font-size: 1.2rem;"></i>
+            <div>
+                <i class="fa-regular fa-bell" style="font-size:1.2rem; margin-right:15px;" onclick="openNews()"></i>
+                <i class="fa-solid fa-bars" style="font-size:1.2rem;" onclick="toggleMenu()"></i>
+            </div>
         </header>
 
+        <div id="menu-overlay">
+            <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-item"><i class="fa-brands fa-youtube" style="color:red;"></i> YouTube</a>
+            <a href="https://wa.me/918252900810" target="_blank" class="menu-item"><i class="fa-brands fa-whatsapp" style="color:green;"></i> WhatsApp</a>
+            <div class="menu-item" onclick="logout()" style="color:red;"><i class="fa-solid fa-power-off"></i> Logout</div>
+        </div>
+
         <section id="home" class="section active">
-            <h3 style="margin-bottom:15px; color: var(--secondary);">🔥 Top Liked Arts</h3>
-            <div id="home-feed"><p style="text-align:center; margin-top:50px;">Loading Online Data...</p></div>
+            <h4 style="margin-bottom:10px; color:#ff4081;">🔥 Top Liked Arts</h4>
+            <div id="feed-home"></div>
+            <div class="powered-by">Powered by ACS</div>
         </section>
 
         <section id="explore" class="section">
-            <h3 style="margin-bottom:15px; color: var(--secondary);">🌍 Explore All</h3>
-            <div id="explore-feed"><p style="text-align:center; margin-top:50px;">Loading Online Data...</p></div>
+            <div style="display:flex; gap:10px;">
+                <input id="search-in" class="input-box" placeholder="Search User or Art..." style="margin:0;">
+                <button class="btn-main" style="width:auto; margin:0;" onclick="doSearch()">Go</button>
+            </div>
+            <div id="search-res" style="margin-top:10px;"></div>
+            <h4 style="margin-top:20px;">Explore All</h4>
+            <div id="feed-explore"></div>
+            <div class="powered-by">Powered by ACS</div>
         </section>
 
         <section id="add" class="section">
-            <h3 style="text-align:center; margin-bottom:20px;">Upload Art</h3>
-            <div class="upload-area">
-                <i class="fa-solid fa-images" style="font-size: 2rem; color:#ccc;"></i>
-                <p>Select up to 3 Images</p>
-                <input type="file" id="fileInput" multiple accept="image/*" style="margin-top:10px;" onchange="window.handleFileSelect()">
-                <div class="preview-grid" id="previewGrid"></div>
+            <h3 style="text-align:center;">Upload Art</h3>
+            <div style="border:2px dashed #ccc; padding:20px; text-align:center; margin:20px 0;">
+                <input type="file" id="up-file" accept="image/*">
             </div>
-            <input type="text" id="artTitle" class="input-box" style="width:100%; text-align:left;" placeholder="Art Title">
-            <textarea id="artDesc" rows="3" placeholder="Description..." style="width:100%; border:1px solid #ddd; padding:10px; border-radius:10px; margin-bottom:10px;"></textarea>
-            <button class="btn-main" onclick="window.saveArt()" id="saveBtn">Post Art</button>
+            <input id="up-title" class="input-box" placeholder="Title">
+            <textarea id="up-desc" class="input-box" placeholder="Description"></textarea>
+            <button class="btn-main" id="post-btn" onclick="uploadPost()">Post Art</button>
+            <div class="powered-by">Powered by ACS</div>
+        </section>
+
+        <section id="chat" class="section">
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <button class="btn-main" onclick="showChatTab('public')">Public</button>
+                <button class="btn-main" style="background:#ddd; color:#333;" onclick="showChatTab('private')">Private</button>
+            </div>
+            <div id="chat-pub" style="height:400px; overflow-y:auto; background:#eee; padding:10px; border-radius:10px;"></div>
+            <div style="display:flex; gap:5px; margin-top:5px;">
+                <input id="chat-in" class="input-box" style="margin:0;">
+                <button class="btn-main" style="width:60px; margin:0;" onclick="sendPub()">Send</button>
+            </div>
+            <div id="chat-priv-list" style="display:none; text-align:center; padding:20px; color:#777;">
+                Search a user in Explore to message them directly.
+            </div>
+            <div class="powered-by">Powered by ACS</div>
         </section>
 
         <section id="profile" class="section">
             <div class="profile-header">
-                <div style="width:80px; height:80px; border-radius:50%; background:var(--secondary); color:white; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 10px;"><i class="fa-solid fa-user"></i></div>
-                <h2 id="profile-id">ACS-USER</h2>
-                <div style="display:flex; justify-content:center; gap:30px; margin:15px 0;">
-                    <div style="text-align:center;"><span class="stat-num" id="stat-followers">0</span><span>Followers</span></div>
-                    <div style="text-align:center;"><span class="stat-num" id="stat-following">0</span><span>Following</span></div>
+                <img id="p-pic" class="profile-pic-big" src="">
+                <h2 id="p-name">Name</h2>
+                <p id="p-user" style="color:#777;">@user</p>
+                <div class="stats-row">
+                    <div class="stat-box" onclick="openFollowList('followers')">
+                        <span class="stat-num" id="s-followers">0</span>Followers
+                    </div>
+                    <div class="stat-box" onclick="openFollowList('following')">
+                        <span class="stat-num" id="s-following">0</span>Following
+                    </div>
+                </div>
+                
+                <div style="text-align:left; margin-top:15px; border-top:1px solid #eee; padding-top:10px;">
+                    <p><b>Edit Profile:</b></p>
+                    <input id="edit-name" class="input-box" placeholder="Name">
+                    <input id="edit-user" class="input-box" placeholder="Username">
+                    <input type="file" id="edit-file" class="input-box">
+                    <button class="btn-main" onclick="updateProfile()">Save</button>
                 </div>
             </div>
-            <h3 style="margin: 0 0 10px 15px;">My Posts</h3>
-            <div id="my-posts" style="padding-bottom: 20px;"></div>
-        </section>
-
-        <section id="menu" class="section">
-            <h3 style="margin-bottom:15px;">Our Services</h3>
-            <div class="menu-list">
-                <a href="#" class="menu-item"><i class="fa-solid fa-palette"></i> Custom Painting Orders</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-image"></i> Sketch Making</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Mandala Art</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-brush"></i> Wall Painting Service</a>
-            </div>
-            <h3 style="margin:20px 0 15px;">Contact</h3>
-            <div class="menu-list">
-                <a href="https://youtube.com/@colourartistanshika" target="_blank" class="menu-item"><i class="fa-brands fa-youtube" style="color:red;"></i> YouTube</a>
-                <a href="https://wa.me/918252900810" target="_blank" class="menu-item"><i class="fa-brands fa-whatsapp" style="color:green;"></i> WhatsApp</a>
-                <div class="menu-item" onclick="window.logout()" style="color:red; cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Logout</div>
-            </div>
+            <div id="my-posts" style="margin-top:10px;"></div>
+            <div class="powered-by">Powered by ACS</div>
         </section>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="window.nav('home')"><i class="fa-solid fa-house"></i>Home</div>
-            <div class="nav-item" onclick="window.nav('explore')"><i class="fa-solid fa-compass"></i>Explore</div>
-            <div class="nav-fab" onclick="window.nav('add')"><i class="fa-solid fa-plus"></i></div>
-            <div class="nav-item" onclick="window.nav('profile')"><i class="fa-solid fa-user"></i>Profile</div>
-            <div class="nav-item" onclick="window.nav('menu')"><i class="fa-solid fa-bars"></i>Menu</div>
+            <div class="nav-item active" onclick="nav('home')"><i class="fa-solid fa-house"></i></div>
+            <div class="nav-item" onclick="nav('explore')"><i class="fa-solid fa-compass"></i></div>
+            <div class="nav-fab" onclick="nav('add')"><i class="fa-solid fa-plus"></i></div>
+            <div class="nav-item" onclick="nav('chat')"><i class="fa-solid fa-comments"></i></div>
+            <div class="nav-item" onclick="nav('profile')"><i class="fa-solid fa-user"></i></div>
         </nav>
     </div>
 
-    <div id="view-modal">
+    <div id="view-modal" class="modal">
         <div class="modal-header">
-            <h3 id="view-title">Art</h3>
-            <i class="fa-solid fa-xmark" style="font-size:1.5rem; cursor:pointer;" onclick="window.closeModal()"></i>
-        </div>
-        <div class="big-img-container"><img id="main-view-img" class="big-img" src=""></div>
-        <div class="thumbnails" id="view-thumbnails"></div>
-        <div style="padding:15px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div style="display:flex; gap:20px;">
-                    <i class="fa-regular fa-heart action-btn" id="modal-like-btn"></i>
-                    <i class="fa-regular fa-share-from-square action-btn" id="modal-share-btn"></i>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <img id="vm-pfp" src="" style="width:35px; height:35px; border-radius:50%;">
+                <div>
+                    <span id="vm-owner" style="font-weight:bold; font-size:0.9rem;">User</span><br>
+                    <button id="vm-follow-btn" onclick="followAction()" style="border:none; background:none; color:blue; font-size:0.8rem; font-weight:bold;">Follow</button>
                 </div>
-                <button class="buy-btn" onclick="window.buyArt()"><i class="fa-brands fa-whatsapp"></i> Buy/Order</button>
-                <i class="fa-solid fa-trash" style="color:#ddd; cursor:pointer; margin-left:10px;" onclick="window.secretDeleteCurrent()"></i>
             </div>
-            <p id="view-likes" style="font-weight:bold; margin-bottom:5px;">0 Likes</p>
-            <p id="view-desc" style="color:#555;"></p>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                <span id="view-owner" style="font-weight:bold; font-size:0.9rem;">Artist</span>
-                <button class="follow-btn" id="modal-follow-btn">Follow</button>
+            <i class="fa-solid fa-xmark" style="font-size:1.5rem;" onclick="closeView()"></i>
+        </div>
+
+        <div class="modal-body">
+            <div class="modal-img-box">
+                <img id="vm-img" class="modal-img">
+            </div>
+            <div class="action-row">
+                <i id="vm-like" class="fa-regular fa-heart action-btn" onclick="likeAction()"></i>
+                <i class="fa-regular fa-share-from-square action-btn" onclick="shareAction()"></i>
+                <i id="vm-del" class="fa-solid fa-trash action-btn" style="display:none; color:red;" onclick="deleteAction()"></i>
+            </div>
+            <div style="padding:10px;">
+                <b id="vm-likes">0 Likes</b>
+                <p id="vm-title" style="margin:5px 0;">Title</p>
+                <p id="vm-desc" style="color:#777; font-size:0.9rem;">Desc</p>
+            </div>
+            <div style="background:#f9f9f9; padding:10px; border-radius:10px; margin-top:10px;">
+                <h4>Comments</h4>
+                <div id="vm-comments" style="max-height:150px; overflow-y:auto; margin-bottom:10px;"></div>
+                <div style="display:flex; gap:5px;">
+                    <input id="vm-c-in" class="input-box" style="margin:0;" placeholder="Add a comment...">
+                    <button class="btn-main" style="width:60px; margin:0;" onclick="commentAction()">Post</button>
+                </div>
             </div>
         </div>
-        <div class="comments-section">
-            <h4>Reviews</h4>
-            <div id="comments-list" class="comment-list"></div>
-            <div class="comment-input-box">
-                <input type="text" id="comment-input" placeholder="Write a review...">
-                <button class="post-btn" onclick="window.postComment()">POST</button>
+    </div>
+
+    <div id="list-modal" class="list-modal">
+        <div class="list-box">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <h3 id="list-title">List</h3>
+                <i class="fa-solid fa-xmark" onclick="document.getElementById('list-modal').style.display='none'"></i>
             </div>
+            <div id="list-content">Loading...</div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, arrayUnion, arrayRemove, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, updateDoc, onSnapshot, addDoc, query, orderBy, deleteDoc, arrayUnion, arrayRemove, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // YOUR CONFIG IS NOW ADDED HERE
-        const firebaseConfig = {
-          apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
-          authDomain: "anshika-art-app-c3098.firebaseapp.com",
-          projectId: "anshika-art-app-c3098",
-          storageBucket: "anshika-art-app-c3098.firebasestorage.app",
-          messagingSenderId: "668172706295",
-          appId: "1:668172706295:web:3fa07ffe6134fd1d9fcef2",
-          measurementId: "G-Q1BJT7T3ZJ"
+        const app = initializeApp({
+            apiKey: "AIzaSyA-pstSQBFBTJpPJ78Lrdf5RSrzXB9JP3Y",
+            authDomain: "anshika-art-app-c3098.firebaseapp.com",
+            projectId: "anshika-art-app-c3098",
+            storageBucket: "anshika-art-app-c3098.firebasestorage.app",
+            messagingSenderId: "668172706295",
+            appId: "1:668172706295:web:3fa07ffe6134fd1d9fcef2",
+            measurementId: "G-Q1BJT7T3ZJ"
+        });
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let allArts = [];
+        let curPostId = null;
+
+        // AUTH
+        window.showAuth = (t) => {
+            document.querySelectorAll('.auth-card').forEach(c=>c.style.display='none');
+            if(t==='home') document.getElementById('auth-select').style.display='block';
+            else document.getElementById('auth-'+t).style.display='block';
         };
 
-        // Initialize Firebase
-        let app, db;
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            console.log("Firebase Connected");
-        } catch (e) {
-            console.error("Firebase Error", e);
-            alert("Firebase Error!");
-        }
-
-        const USER_KEY = "anshika_online_session";
-        const DELETE_PASS = "24361";
-        let currentUser = JSON.parse(localStorage.getItem(USER_KEY)) || null;
-        let arts = [];
-        let currentModalArtID = null;
-        let sessionOTP = "";
-
-        // --- EXPOSE FUNCTIONS ---
-        window.sendOTP = sendOTP;
-        window.verifyOTP = verifyOTP;
-        window.logout = logout;
-        window.nav = nav;
-        window.handleFileSelect = handleFileSelect;
-        window.saveArt = saveArt;
-        window.closeModal = closeModal;
-        window.buyArt = buyArt;
-        window.secretDeleteCurrent = secretDeleteCurrent;
-        window.postComment = postComment;
-        window.openModal = openModal;
-        window.toggleLike = toggleLike;
-        window.toggleFollow = toggleFollow;
-        window.shareArt = shareArt;
-        window.changeMainImg = changeMainImg;
-
-        // --- INIT ---
-        if(currentUser) { 
-            showApp(); 
-        } else {
-            document.getElementById('login-page').style.display = 'flex';
-        }
-
-        // --- AUTH ---
-        function sendOTP() {
-            if(!document.getElementById('phoneInput').value) return alert("Enter Mobile");
-            const customerNo = Math.floor(Math.random() * 100) + 1;
-            sessionOTP = customerNo.toString();
-            alert("You are Customer No: " + customerNo + "\nYour OTP is: " + customerNo);
-            document.getElementById('otp-hint').innerText = "Enter OTP: " + customerNo;
-            document.getElementById('otpBtn').style.display = 'none';
-            document.getElementById('otp-area').style.display = 'block';
-        }
-
-        function verifyOTP() {
-            if(document.getElementById('otpInput').value === sessionOTP) {
-                currentUser = {
-                    id: "ACS-USER-" + Math.floor(1000 + Math.random() * 9000),
-                    phone: document.getElementById('phoneInput').value,
-                    following: [] 
+        const compress = (file) => new Promise((resolve) => {
+            const r = new FileReader(); r.readAsDataURL(file);
+            r.onload = (e) => {
+                const img = new Image(); img.src = e.target.result;
+                img.onload = () => {
+                    const cvs = document.createElement('canvas');
+                    const ctx = cvs.getContext('2d');
+                    const w = 600; 
+                    const scale = w / img.width;
+                    cvs.width = w; cvs.height = img.height * scale;
+                    ctx.drawImage(img, 0, 0, cvs.width, cvs.height);
+                    resolve(cvs.toDataURL('image/jpeg', 0.6));
                 };
-                localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-                showApp();
-            } else {
-                alert("Wrong OTP!");
-            }
-        }
+            };
+        });
 
-        function logout() {
-            localStorage.removeItem(USER_KEY);
-            location.reload();
-        }
-
-        function showApp() {
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('app-screen').style.display = 'block';
-            updateProfileUI();
-            listenToArts();
-        }
-
-        // --- FIRESTORE LISTENER ---
-        function listenToArts() {
-            const q = query(collection(db, "arts"), orderBy("date", "desc"));
-            onSnapshot(q, (snapshot) => {
-                arts = [];
-                snapshot.docs.forEach(doc => {
-                    arts.push({ id: doc.id, ...doc.data() });
-                });
-                renderFeeds();
-            });
-        }
-
-        // --- UPLOAD ---
-        let selectedFiles = [];
-        function handleFileSelect() {
-            const input = document.getElementById('fileInput');
-            const grid = document.getElementById('previewGrid');
-            grid.innerHTML = "";
-            selectedFiles = [];
-            if(input.files.length > 3) { alert("Max 3 images!"); input.value = ""; return; }
-            Array.from(input.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    selectedFiles.push(file);
-                    grid.innerHTML += `<img src="${e.target.result}" class="preview-img">`;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function saveArt() {
-            if(selectedFiles.length === 0) return alert("Select image!");
-            document.getElementById('saveBtn').innerText = "Uploading...";
-            document.getElementById('saveBtn').disabled = true;
-
+        window.register = async () => {
+            const u = document.getElementById('n-user').value;
+            const f = document.getElementById('n-pic').files[0];
+            if(!u) return alert("Username required");
+            const pic = f ? await compress(f) : "https://via.placeholder.com/150";
             try {
-                const images = await Promise.all(selectedFiles.map(file => compressImage(file)));
-                
-                await addDoc(collection(db, "arts"), {
-                    images: images,
-                    title: document.getElementById('artTitle').value || "Untitled",
-                    desc: document.getElementById('artDesc').value,
-                    ownerID: currentUser.id,
-                    likes: [],
-                    comments: [],
-                    date: Date.now()
+                await setDoc(doc(db, "users", u), {
+                    name: document.getElementById('n-name').value,
+                    username: u,
+                    password: document.getElementById('n-pass').value,
+                    question: document.getElementById('n-ques').value,
+                    answer: document.getElementById('n-ans').value,
+                    profilePic: pic, followers: [], following: []
                 });
+                alert("Account Created!"); window.showAuth('old');
+            } catch(e) { alert("Error/Username Taken"); }
+        };
 
-                alert("Posted Online!");
-                document.getElementById('artTitle').value = "";
-                document.getElementById('artDesc').value = "";
-                document.getElementById('fileInput').value = "";
-                document.getElementById('previewGrid').innerHTML = "";
-                selectedFiles = [];
-                nav('home');
+        window.login = async () => {
+            const u = document.getElementById('o-user').value;
+            const p = document.getElementById('o-pass').value;
+            const d = await getDoc(doc(db, "users", u));
+            if(d.exists() && d.data().password === p) {
+                localStorage.setItem("anshika_id", u); location.reload();
+            } else alert("Wrong details");
+        };
+        window.loginPrem = () => { if(document.getElementById('p-code').value==="24361"){localStorage.setItem("anshika_id","PREM_24361"); location.reload();} };
+        window.logout = () => { localStorage.clear(); location.reload(); };
 
-            } catch (e) {
-                console.error(e);
-                alert("Upload Failed! Check Internet or Database Rules.");
-            }
-            document.getElementById('saveBtn').innerText = "Post Art";
-            document.getElementById('saveBtn').disabled = false;
+        // INIT
+        const uid = localStorage.getItem("anshika_id");
+        if(uid) {
+            document.getElementById('auth-page').style.display='none';
+            document.getElementById('app-screen').style.display='block';
+            loadUser(uid);
         }
 
-        function compressImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        const maxWidth = 400; 
-                        const scale = maxWidth / img.width;
-                        canvas.width = maxWidth;
-                        canvas.height = img.height * scale;
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.5));
-                    };
-                };
+        async function loadUser(id) {
+            if(id === "PREM_24361") currentUser = {username:"ACS PREMIUM", name:"Owner", isPrem:true, profilePic:"", followers:[], following:[]};
+            else {
+                const d = await getDoc(doc(db, "users", id));
+                if(d.exists()) currentUser = d.data();
+                else window.logout();
+            }
+            updateUI();
+            startData();
+        }
+
+        function updateUI() {
+            document.getElementById('p-name').innerText = currentUser.name;
+            document.getElementById('p-user').innerText = "@" + currentUser.username;
+            document.getElementById('p-pic').src = currentUser.profilePic;
+            document.getElementById('edit-name').value = currentUser.name;
+            document.getElementById('edit-user').value = currentUser.username;
+            document.getElementById('s-followers').innerText = (currentUser.followers||[]).length;
+            document.getElementById('s-following').innerText = (currentUser.following||[]).length;
+        }
+
+        function startData() {
+            onSnapshot(query(collection(db, "arts"), limit(40)), (snap) => {
+                allArts = [];
+                snap.forEach(d => allArts.push({id:d.id, ...d.data()}));
+                allArts.sort((a,b) => (b.likes?.length||0) - (a.likes?.length||0));
+                renderFeed();
+            });
+            onSnapshot(collection(db, "news"), s => {
+                let txt = "No News"; s.forEach(d => txt = d.data().text);
+                if(txt!=="No News") alert("NEWS: " + txt);
             });
         }
 
-        // --- RENDERING ---
-        function renderFeeds() {
-            const sortedByLikes = [...arts].sort((a, b) => (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0));
-            renderList('home-feed', sortedByLikes);
-            renderList('explore-feed', arts);
-            const myArts = arts.filter(a => a.ownerID === currentUser.id);
-            renderList('my-posts', myArts);
-            updateProfileUI();
+        function renderFeed() {
+            const h = document.getElementById('feed-home');
+            const e = document.getElementById('feed-explore');
+            h.innerHTML = ""; e.innerHTML = "";
+            const m = document.getElementById('my-posts');
+            m.innerHTML = "";
+
+            allArts.forEach(post => {
+                // CLEAN FEED: Just Image & User
+                const html = `
+                <div class="feed-card" onclick="openView('${post.id}')">
+                    <div style="position:relative;">
+                        <img src="${post.images[0]}" class="feed-img">
+                        <div class="feed-overlay">
+                            <div class="user-chip">
+                                <img src="https://via.placeholder.com/30" class="pfp-${post.ownerID}">
+                                <span>${post.ownerID}</span>
+                            </div>
+                            <small>${post.title}</small>
+                        </div>
+                    </div>
+                </div>`;
+                h.innerHTML += html;
+                e.innerHTML += html;
+                if(post.ownerID === currentUser.username) m.innerHTML += html;
+                
+                getDoc(doc(db, "users", post.ownerID)).then(d=>{
+                    if(d.exists()) document.querySelectorAll(`.pfp-${post.ownerID}`).forEach(i=>i.src=d.data().profilePic);
+                });
+            });
         }
 
-        function renderList(containerId, data) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-            if(data.length === 0) { container.innerHTML = "<p style='text-align:center; padding:20px; color:#999;'>No arts found.</p>"; return; }
-            
-            data.forEach(art => {
-                const isLiked = art.likes && art.likes.includes(currentUser.id);
-                const likeCount = art.likes ? art.likes.length : 0;
-                const isFollowing = currentUser.following.includes(art.ownerID);
-                const multiIcon = art.images.length > 1 ? '<div class="multi-icon"><i class="fa-solid fa-layer-group"></i></div>' : '';
-                
-                const safeTitle = (art.title || "").replace(/'/g, "\\'");
-                const safeDesc = (art.desc || "").replace(/'/g, "\\'");
+        // VIEW LOGIC
+        window.openView = async (id) => {
+            curPostId = id;
+            const p = allArts.find(a=>a.id===id);
+            document.getElementById('view-modal').style.display='flex';
+            document.getElementById('vm-img').src = p.images[0];
+            document.getElementById('vm-title').innerText = p.title;
+            document.getElementById('vm-desc').innerText = p.desc || "";
+            document.getElementById('vm-owner').innerText = p.ownerID;
+            document.getElementById('vm-likes').innerText = (p.likes?.length||0) + " Likes";
 
-                container.innerHTML += `
-                <div class="feed-card">
-                    <div class="feed-header">
-                        <div class="user-info">
-                            <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
-                            <span style="font-weight:600; font-size:0.9rem;">${art.ownerID}</span>
-                        </div>
-                        <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="window.toggleFollow('${art.ownerID}')">${isFollowing ? 'Following' : 'Follow'}</button>
-                    </div>
-                    <div class="feed-img-container" onclick="window.openModal('${art.id}')">
-                        <img src="${art.images[0]}" class="feed-img">
-                        ${multiIcon}
-                    </div>
-                    <div class="feed-actions">
-                        <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike('${art.id}')"></i>
-                        <i class="fa-regular fa-share-from-square action-btn" onclick="window.shareArt('${safeTitle}', '${safeDesc}')"></i>
-                        <i class="fa-regular fa-comment action-btn" onclick="window.openModal('${art.id}')"></i>
-                    </div>
-                    <div class="likes-count">${likeCount} Likes</div>
-                    <div class="caption"><strong>${art.title}</strong></div>
+            // PFP in Modal
+            const d = await getDoc(doc(db, "users", p.ownerID));
+            if(d.exists()) document.getElementById('vm-pfp').src = d.data().profilePic;
+
+            // Follow Button in Modal
+            const fBtn = document.getElementById('vm-follow-btn');
+            if(p.ownerID === currentUser.username) fBtn.style.display = 'none';
+            else {
+                fBtn.style.display = 'block';
+                const isFollowing = currentUser.following?.includes(p.ownerID);
+                fBtn.innerText = isFollowing ? "Unfollow" : "Follow";
+            }
+
+            // Like Button
+            const lBtn = document.getElementById('vm-like');
+            const isLiked = p.likes?.includes(currentUser.username);
+            lBtn.className = isLiked ? "fa-solid fa-heart action-btn liked" : "fa-regular fa-heart action-btn";
+
+            // Delete Button
+            const delBtn = document.getElementById('vm-del');
+            if(currentUser.isPrem || p.ownerID === currentUser.username) delBtn.style.display = "block";
+            else delBtn.style.display = "none";
+
+            // Comments
+            const cBox = document.getElementById('vm-comments');
+            cBox.innerHTML = "";
+            (p.comments||[]).forEach((c,i) => {
+                const canDel = currentUser.isPrem || c.user === currentUser.username || p.ownerID === currentUser.username;
+                cBox.innerHTML += `<div style="border-bottom:1px solid #eee; padding:5px; font-size:0.9rem;">
+                    <b>${c.user}</b>: ${c.text} 
+                    ${canDel ? `<i class="fa-solid fa-trash" style="float:right; color:red; font-size:0.8rem; cursor:pointer;" onclick="delCom('${id}',${i})"></i>` : ''}
                 </div>`;
             });
         }
+        window.closeView = () => document.getElementById('view-modal').style.display='none';
 
-        // --- ACTIONS ---
-        async function toggleLike(id) {
-            const artRef = doc(db, "arts", id);
-            const art = arts.find(a => a.id === id);
-            const isLiked = art.likes && art.likes.includes(currentUser.id);
-            if(isLiked) { await updateDoc(artRef, { likes: arrayRemove(currentUser.id) }); } 
-            else { await updateDoc(artRef, { likes: arrayUnion(currentUser.id) }); }
-        }
+        // ACTIONS inside Modal
+        window.likeAction = async () => {
+            const ref = doc(db, "arts", curPostId);
+            const p = allArts.find(a=>a.id===curPostId);
+            if(p.likes.includes(currentUser.username)) await updateDoc(ref, {likes: arrayRemove(currentUser.username)});
+            else await updateDoc(ref, {likes: arrayUnion(currentUser.username)});
+            openView(curPostId);
+        };
 
-        function toggleFollow(ownerID) {
-            if(ownerID === currentUser.id) return alert("Can't follow yourself.");
-            const index = currentUser.following.indexOf(ownerID);
-            if(index === -1) currentUser.following.push(ownerID); else currentUser.following.splice(index, 1);
-            localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
-            renderFeeds(); updateProfileUI();
-        }
-
-        function openModal(id) {
-            const art = arts.find(a => a.id === id);
-            if(!art) return;
-            currentModalArtID = id;
-
-            document.getElementById('view-modal').style.display = 'block';
-            document.getElementById('view-title').innerText = art.title;
-            document.getElementById('view-desc').innerText = art.desc;
-            document.getElementById('view-owner').innerText = art.ownerID;
-            document.getElementById('main-view-img').src = art.images[0];
-
-            const thumbs = document.getElementById('view-thumbnails');
-            thumbs.innerHTML = "";
-            art.images.forEach((src, idx) => {
-                thumbs.innerHTML += `<img src="${src}" class="thumb ${idx===0?'active':''}" onclick="window.changeMainImg('${src}', this)">`;
-            });
-
-            renderComments(art);
-            updateModalLikeUI(art);
-
-            document.getElementById('modal-like-btn').onclick = () => toggleLike(id);
-            document.getElementById('modal-share-btn').onclick = () => shareArt(art.title, art.desc);
-
-            const isFollowing = currentUser.following.includes(art.ownerID);
-            const followBtn = document.getElementById('modal-follow-btn');
-            followBtn.innerText = isFollowing ? "Following" : "Follow";
-            followBtn.onclick = () => { toggleFollow(art.ownerID); openModal(id); };
-        }
-
-        function changeMainImg(src, thumb) {
-            document.getElementById('main-view-img').src = src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-        }
-
-        function updateModalLikeUI(art) {
-            const isLiked = art.likes && art.likes.includes(currentUser.id);
-            const btn = document.getElementById('modal-like-btn');
-            btn.className = `${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart action-btn ${isLiked ? 'liked' : ''}`;
-            document.getElementById('view-likes').innerText = (art.likes ? art.likes.length : 0) + " Likes";
-        }
-
-        async function postComment() {
-            const text = document.getElementById('comment-input').value;
-            if(!text) return;
-            const artRef = doc(db, "arts", currentModalArtID);
-            const newComment = { user: currentUser.id, text: text, date: new Date().toLocaleDateString() };
-            await updateDoc(artRef, { comments: arrayUnion(newComment) });
-            document.getElementById('comment-input').value = "";
-        }
-
-        function renderComments(art) {
-            const list = document.getElementById('comments-list');
-            list.innerHTML = "";
-            if(!art.comments || art.comments.length === 0) { list.innerHTML = "<p style='color:#ccc; font-size:0.8rem; text-align:center;'>No reviews yet.</p>"; return; }
-            art.comments.forEach(c => {
-                list.innerHTML += `<div class="comment-item"><span class="comment-user">${c.user}</span><span>${c.text}</span><div class="comment-date">${c.date}</div></div>`;
-            });
-        }
-
-        async function secretDeleteCurrent() {
-            const pass = prompt("Audit Password:");
-            if(pass === DELETE_PASS) {
-                if(confirm("Permanently delete for EVERYONE?")) {
-                    await deleteDoc(doc(db, "arts", currentModalArtID));
-                    closeModal();
-                    alert("Deleted from Database.");
-                }
-            } else if (pass) alert("Access Denied");
-        }
-
-        function shareArt(title, desc) {
-            if(navigator.share) {
-                navigator.share({ title: title, text: desc, url: window.location.href }).catch(console.error);
+        window.followAction = async () => {
+            const p = allArts.find(a=>a.id===curPostId);
+            const target = p.ownerID;
+            const me = doc(db, "users", currentUser.username);
+            const them = doc(db, "users", target);
+            
+            if(currentUser.following.includes(target)) {
+                await updateDoc(me, {following: arrayRemove(target)});
+                await updateDoc(them, {followers: arrayRemove(currentUser.username)});
+                alert("Unfollowed " + target);
             } else {
-                prompt("Copy link:", window.location.href);
+                await updateDoc(me, {following: arrayUnion(target)});
+                await updateDoc(them, {followers: arrayUnion(currentUser.username)});
+                alert("Followed " + target);
             }
-        }
+            location.reload();
+        };
 
-        function buyArt() {
-            const art = arts.find(a => a.id === currentModalArtID);
-            const phone = "918252900810"; 
-            const text = `Hi, I want to order: ${art.title}`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        function closeModal() { document.getElementById('view-modal').style.display = 'none'; currentModalArtID = null; }
+        window.commentAction = async () => {
+            const t = document.getElementById('vm-c-in').value;
+            if(t) await updateDoc(doc(db,"arts",curPostId),{comments:arrayUnion({user:currentUser.username, text:t})});
+            document.getElementById('vm-c-in').value=""; openView(curPostId);
+        };
         
-        function nav(tab) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
-            const navIndex = ['home','explore','add','profile','menu'].indexOf(tab);
-            if(navIndex !== -1 && tab !== 'add') document.querySelectorAll('.nav-item')[navIndex < 2 ? navIndex : navIndex-1].classList.add('active');
-        }
+        window.deleteAction = async () => { if(confirm("Delete Post?")) { await deleteDoc(doc(db, "arts", curPostId)); closeView(); } };
+        window.delCom = async(pid, idx) => {
+            const p = allArts.find(a=>a.id===pid);
+            const nc = p.comments.filter((_,i)=>i!==idx);
+            await updateDoc(doc(db,"arts",pid),{comments:nc}); openView(pid);
+        };
+        window.shareAction = () => {
+             const p = allArts.find(a=>a.id===curPostId);
+             if(navigator.share) navigator.share({title:p.title, text:p.title, url:window.location.href});
+             else prompt("Link:", window.location.href);
+        };
 
-        function updateProfileUI() {
-            if(!currentUser) return;
-            document.getElementById('profile-id').innerText = currentUser.id;
-            document.getElementById('stat-following').innerText = currentUser.following.length;
-        }
+        // FOLLOW LIST LOGIC (FIXED)
+        window.openFollowList = async (type) => {
+            document.getElementById('list-modal').style.display='flex';
+            document.getElementById('list-title').innerText = type.toUpperCase();
+            const box = document.getElementById('list-content');
+            box.innerHTML = "Loading...";
+            
+            // Re-fetch current user to get latest list
+            const d = await getDoc(doc(db, "users", currentUser.username));
+            const list = d.data()[type] || [];
+            
+            box.innerHTML = "";
+            if(list.length === 0) box.innerHTML = "Empty list.";
+            
+            list.forEach(u => {
+                box.innerHTML += `<div class="list-item"><i class="fa-solid fa-user"></i> <b>${u}</b></div>`;
+            });
+        };
+
+        // EXTRAS
+        window.nav = (t) => {
+            document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+            document.getElementById(t).classList.add('active');
+        };
+        window.toggleMenu = () => { const m=document.getElementById('menu-overlay'); m.style.display=m.style.display==='flex'?'none':'flex'; };
+        window.openNews = () => { if(currentUser.isPrem) { const t=prompt("Update News:"); if(t) addDoc(collection(db,"news"),{text:t}); } };
+        
+        window.uploadPost = async() => {
+            const f = document.getElementById('up-file').files[0];
+            const t = document.getElementById('up-title').value;
+            const d = document.getElementById('up-desc').value;
+            if(!f) return alert("File?");
+            document.getElementById('post-btn').innerText = "Uploading...";
+            const pic = await compress(f);
+            await addDoc(collection(db, "arts"), {
+                title:t, desc:d, images:[pic], ownerID:currentUser.username, likes:[], comments:[], date:Date.now()
+            });
+            alert("Posted!"); document.getElementById('post-btn').innerText = "Post Art"; window.nav('home');
+        };
+        
+        window.updateProfile = async() => {
+             const n = document.getElementById('edit-name').value;
+             const u = document.getElementById('edit-user').value;
+             const f = document.getElementById('edit-file').files[0];
+             let data = { name: n, username: u };
+             if(f) data.profilePic = await compress(f);
+             await updateDoc(doc(db, "users", currentUser.username), data);
+             alert("Updated! Re-login recommended."); location.reload();
+        };
+
+        // CHAT
+        window.showChatTab = (t) => {
+            document.getElementById('chat-pub').style.display = t==='public'?'block':'none';
+            document.getElementById('chat-priv-list').style.display = t==='private'?'block':'none';
+        };
+        onSnapshot(query(collection(db, "public_chat"), limit(50)), snap => {
+             const b = document.getElementById('chat-pub'); b.innerHTML="";
+             snap.forEach(d=>{const m=d.data(); b.innerHTML+=`<div><b>${m.user}</b>: ${m.text}</div>`;});
+        });
+        window.sendPub = async() => {
+            const t=document.getElementById('chat-in').value;
+            if(t) await addDoc(collection(db,"public_chat"),{user:currentUser.username, text:t, date:Date.now()});
+            document.getElementById('chat-in').value="";
+        };
     </script>
 </body>
 </html>
